@@ -1,42 +1,134 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
 
 * {
-  box-sizing: border-box;
-  padding: 0;
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 300;
+  font-style: normal;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 300;
+  font-style: bold;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+div{
+  width: 100%;
+}
+
+input,
+textarea {
+  font-family: "IBM Plex Sans", sans-serif;
+  padding: 0.7rem;
+  border: 0;
+  border-bottom: 1.22px solid var(--border-strong-contextual, #8D8D8D);
+  background: var(--field-contextual, #F4F4F4);
+  width: 100%;
+}
+
+label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+}
+
+input[type="checkbox"]:checked {
+  color: black;
+}
+
+.ibm-plex-sans-thin {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.ibm-plex-sans-extralight {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.ibm-plex-sans-light {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.ibm-plex-sans-regular {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.ibm-plex-sans-medium {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.ibm-plex-sans-semibold {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.ibm-plex-sans-bold {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.ibm-plex-sans-thin-italic {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.ibm-plex-sans-extralight-italic {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 200;
+  font-style: italic;
+}
+
+.ibm-plex-sans-light-italic {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.ibm-plex-sans-regular-italic {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.ibm-plex-sans-medium-italic {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.ibm-plex-sans-semibold-italic {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.ibm-plex-sans-bold-italic {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 700;
+  font-style: italic;
 }
