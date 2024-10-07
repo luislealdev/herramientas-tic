@@ -1,4 +1,7 @@
 'use client';
+import { TextArea } from '@carbon/react';
+import { Add } from '@carbon/react/icons';
+
 export const EditTICForm = () => {
   return (
     <form action="" className="flex column mt-20">
@@ -28,7 +31,8 @@ export const EditTICForm = () => {
         </div>
       </div>
       <label htmlFor="description" className="mt-50">Descripción</label>
-      <textarea name="" id="" cols={30} rows={10} className="mt-10" placeholder="Ingrese texto aquí"></textarea>
+      {/* <textarea name="" id="" cols={30} rows={10} className="mt-10" placeholder="Ingrese texto aquí"></textarea> */}
+      <TextArea labelText="Ingrese texto aquí" />
       <div className="grid-c-2 mt-50 gap-30">
         <div>
           <p>Ventajas</p>
@@ -43,7 +47,8 @@ export const EditTICForm = () => {
         <div>
           <p>Desventajas</p>
           <div className="flex mt-10 align-center gap-15">
-            <i className="fa-solid fa-plus radius-100 black-border p-5"></i>
+            {/* <i className="fa-solid fa-plus radius-100 black-border p-5"></i> */}
+            <Add />
             <div>
               <input type="text" placeholder="Ingrese texto aquí" />
             </div>
