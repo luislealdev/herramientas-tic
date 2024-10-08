@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  postgres-db:
+    image: postgres:15.3
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_DB: herramientas_tic
+      POSTGRES_PASSWORD: root
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432

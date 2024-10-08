@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id       String @id @default(uuid())
+    email    String @unique
+    password String
+    Tool     Tool[]
+}
+
+model Image {
+    id     String @id @default(uuid())
+    url    String
+    Tool   Tool   @relation(fields: [toolId], references: [id])
+    toolId String
+}
+
+model Tool {
+    id            String   @id @default(uuid())
+    name          String
+    description   String
+    advantages    String[]
+    disadvantages String[]
+    useCases      String[]
+    logo          String
+    images        Image[]
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+    category      Category @relation(fields: [categoryId], references: [id])
+    categoryId    String
+    user          User     @relation(fields: [createdBy], references: [id])
+    createdBy     String
+    slug          String
+}
+
+model Category {
+    tools Tool[]
+    id    String @id @default(uuid())
+    name  String
+    slug  String
+}
