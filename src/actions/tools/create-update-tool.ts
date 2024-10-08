@@ -91,6 +91,7 @@ export const createUpdateTool = async (formData: FormData) => {
                 logo = (await uploadImages([formData.get('logo') as File]))?.[0] || '';
                 tool = await prisma.tool.create({
                     data: {
+                        // TODO: Get user from session or token
                         createdBy: '36488659-0d0b-4124-aa20-58b8c4a0f26a',
                         logo, // Guardar logo al crear
                         ...rest,
