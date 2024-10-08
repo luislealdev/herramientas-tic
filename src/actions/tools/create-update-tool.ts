@@ -15,18 +15,15 @@ const toolSchema = z.object({
     id: z.string().uuid().optional().nullable(),
     name: z.string().min(3).max(255),
     description: z.string().min(3).max(255),
-    categories: z.array(z.string().uuid()),
-    advantages: z.array(z.string().min(3).max(255)),
-    disadvantages: z.array(z.string().min(3).max(255)),
-    useCases: z.array(z.string().min(3).max(255)),
+    categories: z.string(),
+    advantages: z.string(),
+    disadvantages: z.string(),
+    useCases: z.string(),
 });
 
 // Función para crear o actualizar una herramienta TIC
 export const createUpdateTool = async (formData: FormData) => {
-
-    // Get createdBy if from session
-    // const user = session.get('user');
-    // const createdBy = user?.id;
+    console.log('formData', formData);
 
     const data = Object.fromEntries(formData);
     const parsedTool = toolSchema.safeParse(data);
@@ -48,26 +45,32 @@ export const createUpdateTool = async (formData: FormData) => {
         };
     }
 
-
     const toolToUpload = {
         ...toolData,
         slug: toolData.name.toLowerCase().replace(/ /g, '-').trim(),
-    }
+    };
     const { id, ...rest } = toolToUpload;
 
     try {
         const prismaTx = await prisma.$transaction(async () => {
             let tool: Tool;
-            const categories = rest.categories.map((id: string) => id);
-            const advantages = rest.advantages.map((text: string) => text);
-            const disadvantages = rest.disadvantages.map((text: string) => text);
-            const useCases = rest.useCases.map((text: string) => text);
+            const categories = rest.categories.split(',').map((id: string) => id);
+            const advantages = rest.advantages.split(',');
+            const disadvantages = rest.disadvantages.split(',');
+            const useCases = rest.useCases.split(',');
+
+            let logo = null; // Variable para almacenar el logo
 
             if (id) {
                 // Actualizar herramienta existente
+                if (formData.get('logo')) {
+                    logo = await uploadImages([formData.get('logo') as File]);
+                }
+
                 tool = await prisma.tool.update({
                     where: { id },
                     data: {
+                        logo: logo ? logo[0] || undefined : undefined, // Actualiza el logo si se sube uno nuevo
                         ...rest,
                         categories: {
                             connect: categories.map((id: string) => ({ id })),
@@ -83,14 +86,13 @@ export const createUpdateTool = async (formData: FormData) => {
                         },
                     },
                 });
-
             } else {
                 // Crear nueva herramienta
+                logo = (await uploadImages([formData.get('logo') as File]))?.[0] || '';
                 tool = await prisma.tool.create({
                     data: {
-                        // TODO: CHANGE createdBy to the user id
-                        createdBy: '',
-                        logo: '',
+                        createdBy: '36488659-0d0b-4124-aa20-58b8c4a0f26a',
+                        logo, // Guardar logo al crear
                         ...rest,
                         categories: {
                             connect: categories.map((id: string) => ({ id })),
@@ -104,34 +106,15 @@ export const createUpdateTool = async (formData: FormData) => {
                         useCases: {
                             set: useCases,
                         },
-                    },
-                });
-            }
-
-
-            // Cargar el logo si está presente
-            // Proceso de carga y guardado de logo
-            if (formData.get('logo')) {
-                const logo = await uploadImages([formData.get('logo') as File]);
-                if (!logo) {
-                    throw new Error('No se pudo cargar el logo, rollingback');
-                }
-
-                await prisma.tool.update({
-                    where: { id: toolData.id! },
-                    data: {
-                        logo: logo[0]!,
                     },
                 });
             }
 
             // Cargar las imágenes si están presentes
-            // Proceso de carga y guardado de imagenes
             if (formData.getAll('images')) {
-                // [https://url.jpg, https://url.jpg]
                 const images = await uploadImages(formData.getAll('images') as File[]);
                 if (!images) {
-                    throw new Error('No se pudo cargar las imágenes, rollingback');
+                    throw new Error('No se pudo cargar las imágenes, rolling back');
                 }
 
                 await prisma.image.createMany({
@@ -140,7 +123,6 @@ export const createUpdateTool = async (formData: FormData) => {
                         toolId: toolData.id!,
                     }))
                 });
-
             }
 
             return { tool };
