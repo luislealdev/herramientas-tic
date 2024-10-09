@@ -24,7 +24,9 @@ interface FormInputs {
 }
 
 export const EditTICForm = ({ tool, categories }: Props) => {
+
   const router = useRouter();
+
   const { handleSubmit, register, setValue } = useForm<FormInputs>({
     defaultValues: {
       name: tool.name,
@@ -78,6 +80,9 @@ export const EditTICForm = ({ tool, categories }: Props) => {
       return;
     }
 
+    // Alert the user that the tool was updated
+    alert('Herramienta actualizada correctamente');
+
     router.replace(`/admin/tic/${updatedTool?.slug}`);
   };
 
@@ -110,7 +115,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
     const updatedCategories = selectedCategories.includes(categoryId)
       ? selectedCategories.filter((id) => id !== categoryId)
       : [...selectedCategories, categoryId];
-    
+
     setSelectedCategories(updatedCategories);
   };
 
