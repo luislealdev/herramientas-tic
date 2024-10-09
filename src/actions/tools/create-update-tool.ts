@@ -143,6 +143,8 @@ export const createUpdateTool = async (formData: FormData) => {
     }
 };
 
+
+// Función para subir imágenes a Cloudinary
 const uploadImages = async (images: File[]) => {
 
     try {
