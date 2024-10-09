@@ -2,12 +2,8 @@
 import { authenticate } from "@/actions/auth/login";
 import { useEffect } from "react";
 import { useFormState } from "react-dom";
-import bcryptjs from 'bcryptjs';
 
 export const LoginForm = () => {
-
-    console.log(bcryptjs.hashSync('123456'));
-    
 
     const [state, dispatch] = useFormState(authenticate, undefined);
 
