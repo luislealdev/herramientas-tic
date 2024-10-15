@@ -1,6 +1,10 @@
+import AdminBoard from "@/components/admin/adminBoard";
+
 const HomeAdminPage = () => {
   return (
-    <div>HomeAdminPage</div>
+    <main className='p-100'>
+    <AdminBoard />
+    </main>
   )
 }
 
