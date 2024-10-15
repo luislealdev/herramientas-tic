@@ -1,0 +1,111 @@
+/* components/AdminBoard.module.css */
+.adminBoard {
+    padding: 20px;
+    font-family: 'IBM Plex Sans', sans-serif;
+  }
+
+  /* Barra de herramientas */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+  }
+  
+  .searchBox {
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    padding: 5px;
+  }
+  
+  .searchBox input {
+    border: none;
+    outline: none;
+    font-size: 14px;
+  }
+  
+  .icon {
+    margin: 10px 10px;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .addButton {
+    background-color: #0f62fe;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 12px 30px;
+    align-items: center;
+  }
+  
+  .addButton:hover {
+    background-color: #0353e9;
+  }
+  
+  /* Tabla */
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table th, .table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  .table td {
+    cursor: pointer;
+  }
+  
+  .row:hover {
+    background-color: #f9f9f9;
+  }
+  
+  .expandedRow {
+    background-color: #f9f9f9;
+  }
+  
+  /* Paginación */
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 10px 0;
+    
+  }
+  
+  .pageSize select {
+    border: 1px solid #ddd;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .pageControls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .pageButton {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 5px 10px;
+    cursor: pointer;
+    
+  }
+  
+  .pageButton:hover {
+    background-color: #f0f0f0;
+  }
+  

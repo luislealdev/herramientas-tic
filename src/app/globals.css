@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+@import url('carbon-components/css/carbon-components.min.css');
 
 * {
   margin: 0;
@@ -131,4 +132,74 @@ input[type="checkbox"]:checked {
   font-family: "IBM Plex Sans", sans-serif;
   font-weight: 700;
   font-style: italic;
+}
+/* Overlay para centrar el modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+/* Aumenta el ancho del modal */
+.modal-container {
+  background-color: #f4f4f4;
+  padding: 2.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 700px; /* Aumentar el ancho */
+}
+
+/* Añadir más espacio entre los elementos del formulario */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Aumentar el espacio entre cada elemento del formulario */
+}
+
+/* Ajusta la separación entre el título y el formulario */
+.modal-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 1.5rem; /* Aumentar el espacio debajo del título */
+  color: #000;
+}
+
+.modal-subtitle {
+  font-size: 14px;
+  margin-bottom: 2rem; /* Más espacio debajo del subtítulo */
+  color: #333;
+}
+
+/* Ajuste de márgenes para los inputs */
+.login-input {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 1.5rem; /* Aumentar margen inferior */
+  width: 100%;
+  font-size: 16px;
+}
+
+/* Botones de acción: ajuste de espacio entre ellos */
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem; /* Más espacio antes de los botones */
+}
+
+.submit-button {
+  background-color: #0062ff;
+  color: white;
+  padding: 0.85rem 2rem; /* Aumentar el tamaño del botón */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
 }
