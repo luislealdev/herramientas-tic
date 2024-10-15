@@ -11,16 +11,42 @@ export const LoginForm = () => {
         if (state === 'Success') {
             window.location.replace('/admin');
         }
-
     }, [state]);
 
     return (
-        <form action={dispatch}>
-            <label htmlFor="email">Email</label>
-            <input type="email" id="email" name="email" />
-            <label htmlFor="password">Password</label>
-            <input type="password" id="password" name="password" />
-            <button type="submit">Login</button>
-        </form>
-    )
-}
+        <div className="modal-overlay">
+            <div className="modal-container">
+                <h2 className="modal-title">Iniciar Sesión</h2>
+                <p className="modal-subtitle">
+                    Introduce estos datos para iniciar sesión como administrador
+                </p>
+                <form action={dispatch} className="login-form">
+                    <label htmlFor="username" className="login-label">Usuario</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        className="login-input" 
+                        placeholder="Usuario" 
+                        required 
+                    />
+                    <label htmlFor="password" className="login-label">Contraseña</label>
+                    <div className="password-container">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            className="login-input" 
+                            placeholder="Contraseña" 
+                            required 
+                        />
+                    </div>
+                    <div className="modal-actions">
+                        <a href="/" className="cancel-link">Cancel</a>
+                        <button type="submit" className="submit-button">Iniciar Sesión</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+};

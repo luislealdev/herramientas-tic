@@ -4,8 +4,9 @@ import { LoginForm } from './ui/LoginForm';
 const LoginPage = () => {
     return (
         <>
-            <h1>Iniciar Sesión</h1>
+        <main className='p-100'>
             <LoginForm />
+        </main>
         </>
     )
 }

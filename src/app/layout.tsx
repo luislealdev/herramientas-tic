@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "@/components/providers/Providers";
+import 'carbon-components/css/carbon-components.min.css';
 
 export const metadata: Metadata = {
   title: "Herramientas de gestión de proyectos de desarrollo de software",

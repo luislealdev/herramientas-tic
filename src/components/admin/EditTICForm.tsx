@@ -24,10 +24,8 @@ interface FormInputs {
 }
 
 export const EditTICForm = ({ tool, categories }: Props) => {
-
   const router = useRouter();
-
-  const { handleSubmit, register, setValue } = useForm<FormInputs>({
+  const { handleSubmit, register, setValue, formState: { errors } } = useForm<FormInputs>({
     defaultValues: {
       name: tool.name,
       description: tool.description,
@@ -48,6 +46,12 @@ export const EditTICForm = ({ tool, categories }: Props) => {
   );
 
   const onSubmit = async (data: FormInputs) => {
+    // Validación manual de categorías seleccionadas
+    if (selectedCategories.length === 0) {
+      alert("Debes seleccionar al menos una categoría");
+      return;
+    }
+
     const formData = new FormData();
 
     const { images, logo, ...toolToSave } = data;
@@ -61,7 +65,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
     formData.append("advantages", toolToSave.advantages);
     formData.append("disadvantages", toolToSave.disadvantages);
     formData.append("useCases", toolToSave.useCases);
-    formData.append("categories", selectedCategories.join(',')); // Convertir el array a un string separado por comas
+    formData.append("categories", selectedCategories.join(','));
 
     if (images) {
       for (let i = 0; i < images.length; i++) {
@@ -79,9 +83,6 @@ export const EditTICForm = ({ tool, categories }: Props) => {
       alert('Producto no se pudo actualizar');
       return;
     }
-
-    // Alert the user that the tool was updated
-    alert('Herramienta actualizada correctamente');
 
     router.replace(`/admin/tic/${updatedTool?.slug}`);
   };
@@ -110,19 +111,25 @@ export const EditTICForm = ({ tool, categories }: Props) => {
     }
   };
 
-  // Función para manejar cambios en las categorías seleccionadas
   const handleCategoryChange = (categoryId: string) => {
     const updatedCategories = selectedCategories.includes(categoryId)
       ? selectedCategories.filter((id) => id !== categoryId)
       : [...selectedCategories, categoryId];
-
+    
     setSelectedCategories(updatedCategories);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex column mt-20">
       <label htmlFor="name">Nombre de la herramienta</label>
-      <input {...register("name", { required: true })} type="text" className="mt-10" placeholder="Ingrese texto aquí" />
+      <input 
+        {...register("name", { required: "El nombre es obligatorio" })} 
+        type="text" 
+        className="mt-10" 
+        placeholder="Ingrese texto aquí" 
+      />
+      {errors.name && <p className="error">{errors.name.message}</p>}
+      
       <div className="mt-50 ph-40">
         <p>Categoría</p>
         {categories.map((category) => (
@@ -130,16 +137,23 @@ export const EditTICForm = ({ tool, categories }: Props) => {
             <input
               type="checkbox"
               id={category.id}
-              checked={selectedCategories.includes(category.id)} // Verificar si la categoría ya está seleccionada
-              onChange={() => handleCategoryChange(category.id)} // Actualizar categorías seleccionadas
+              checked={selectedCategories.includes(category.id)}
+              onChange={() => handleCategoryChange(category.id)}
             />
             {category.name}
           </label>
         ))}
+        {/* Mensaje de error personalizado para categorías */}
+        {selectedCategories.length === 0 && <p className="error">Debes seleccionar al menos una categoría</p>}
       </div>
+      
       <label htmlFor="description" className="mt-50">Descripción</label>
-      <TextArea {...register("description", { required: true })} labelText="Ingrese texto aquí" />
-
+      <TextArea 
+        {...register("description", { required: "La descripción es obligatoria" })} 
+        labelText="Ingrese texto aquí" 
+      />
+      {errors.description && <p className="error">{errors.description.message}</p>}
+      
       <div className="grid-c-2 mt-50 gap-30">
         <div>
           <p>Ventajas</p>
@@ -153,6 +167,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
             ))}
           </ul>
         </div>
+        
         <div>
           <p>Desventajas</p>
           <div className="flex mt-10 align-center gap-15">
@@ -177,20 +192,22 @@ export const EditTICForm = ({ tool, categories }: Props) => {
           <li key={index}>{useCase}</li>
         ))}
       </ul>
-
-      {/* Imágenes y logo */}
+      
       <div className="mt-50 grid-40-60 gap-30">
         <div>
           <p>Logo</p>
           <div className="flex mt-10 align-center gap-15">
-            <input {...register("logo", { required: true })} type="file" />
+            <input {...register("logo", { required: "El logo es obligatorio" })} type="file" />
           </div>
+          {errors.logo && <p className="error">{errors.logo.message}</p>}
         </div>
+        
         <div>
           <p>Imágenes</p>
           <div className="flex mt-10 align-center gap-15">
-            <input {...register("images", { required: true })} multiple type="file" />
+            <input {...register("images", { required: "Las imágenes son obligatorias" })} multiple type="file" />
           </div>
+          {errors.images && <p className="error">{errors.images.message}</p>}
         </div>
       </div>
 
