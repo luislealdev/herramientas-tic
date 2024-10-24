@@ -21,13 +21,13 @@ export const LoginForm = () => {
                     Introduce estos datos para iniciar sesión como administrador
                 </p>
                 <form action={dispatch} className="login-form">
-                    <label htmlFor="username" className="login-label">Usuario</label>
+                    <label htmlFor="email" className="login-label">Email</label>
                     <input 
                         type="text" 
-                        id="username" 
-                        name="username" 
+                        id="email" 
+                        name="email" 
                         className="login-input" 
-                        placeholder="Usuario" 
+                        placeholder="Email" 
                         required 
                     />
                     <label htmlFor="password" className="login-label">Contraseña</label>
