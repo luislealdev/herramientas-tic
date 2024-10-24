@@ -1,7 +1,8 @@
 "use client";
 import React, { useState } from 'react';
 import styles from './AdminBoard.module.css';
-import { FiSearch, FiEdit2, FiFilter } from 'react-icons/fi'; // Para los iconos
+import { FiEdit2, FiFilter, FiSearch } from 'react-icons/fi';
+// import { FiSearch, FiEdit2, FiFilter } from 'react-icons/fi'; // Para los iconos
 
 const AdminBoard = () => {
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
@@ -67,7 +68,7 @@ const AdminBoard = () => {
           ))}
         </tbody>
       </table>
-      
+
       <div className={styles.pagination}>
         <div className={styles.pageSize}>
           <select>
@@ -77,10 +78,10 @@ const AdminBoard = () => {
           </select>
         </div>
         <div>
-        <p>1-100 of 100 items</p>
+          <p>1-100 of 100 items</p>
         </div>
         <div className={styles.pageControls}>
-        <span>1 of 10 pages</span>
+          <span>1 of 10 pages</span>
           <button className={styles.pageButton}>&lt;</button>
           <button className={styles.pageButton}>&gt;</button>
         </div>
