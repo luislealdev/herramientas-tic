@@ -31,6 +31,9 @@ export async function authenticate(
 
 export const login = async (email: string, password: string) => {
 
+    console.log(email, password);
+    
+
     try {
 
         await signIn('credentials', { email, password })
