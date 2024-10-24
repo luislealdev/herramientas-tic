@@ -1,9 +1,9 @@
-import AdminBoard from "@/components/admin/adminBoard";
+import AdminBoard from "@/components/admin/AdminBoard";
 
 const HomeAdminPage = () => {
   return (
     <main className='p-100'>
-    <AdminBoard />
+      <AdminBoard />
     </main>
   )
 }
