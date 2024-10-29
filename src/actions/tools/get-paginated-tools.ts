@@ -1,7 +1,7 @@
 'use server'
 import prisma from '@/lib/prisma';
 
-interface  PaginationOptions{
+interface PaginationOptions {
     page?: number,
     take?: number,
 }
@@ -13,6 +13,12 @@ export const getPaginatedTools = async ({ page = 1, take = 7 }: PaginationOption
         const tools = await prisma.tool.findMany({
             take: take,
             skip: (page - 1) * take,
+            orderBy: {
+                createdAt: 'desc'
+            },
+            include: {
+                images: true
+            }
         });
 
         const totalCount = await prisma.tool.count({});
@@ -24,6 +30,7 @@ export const getPaginatedTools = async ({ page = 1, take = 7 }: PaginationOption
             tools
         }
     } catch (error) {
+        console.error(error);
         throw new Error("No se pudieron cargar las herramientas")
     }
 }
