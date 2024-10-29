@@ -86,9 +86,6 @@ export const EditTICForm = ({ tool, categories }: Props) => {
     formData.append("useCases", toolToSave.useCases);
     formData.append("categories", selectedCategories.join(','));
 
-    console.log("Logo", logo);
-    
-
     if (logo) {
       formData.append("logo", logo); // Usa `logo` directamente sin acceder a `logo[0]`
     }
