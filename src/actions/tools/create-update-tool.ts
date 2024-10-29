@@ -19,14 +19,16 @@ const toolSchema = z.object({
     advantages: z.string(),
     disadvantages: z.string(),
     useCases: z.string(),
+    userId: z.string()
 });
 
 // Función para crear o actualizar una herramienta TIC
 export const createUpdateTool = async (formData: FormData) => {
-    console.log('formData', formData);
 
     const data = Object.fromEntries(formData);
-    const parsedTool = toolSchema.safeParse(data);
+    const parsedData = toolSchema.safeParse(data);
+    const { userId, ...parsedTool } = parsedData;
+
 
     if (!parsedTool.success) {
         console.log(parsedTool.error);
@@ -92,7 +94,7 @@ export const createUpdateTool = async (formData: FormData) => {
                 tool = await prisma.tool.create({
                     data: {
                         // TODO: Get user from session or token
-                        createdBy: '36488659-0d0b-4124-aa20-58b8c4a0f26a',
+                        createdBy: userId,
                         logo, // Guardar logo al crear
                         ...rest,
                         categories: {

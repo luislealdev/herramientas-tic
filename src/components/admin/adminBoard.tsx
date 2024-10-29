@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import styles from './AdminBoard.module.css';
 import { FiEdit2, FiFilter, FiSearch } from 'react-icons/fi';
+import Link from 'next/link';
 // import { FiSearch, FiEdit2, FiFilter } from 'react-icons/fi'; // Para los iconos
 
 const AdminBoard = () => {
@@ -34,7 +35,7 @@ const AdminBoard = () => {
         </div>
         <FiEdit2 className={styles.icon} />
         <FiFilter className={styles.icon} />
-        <button className={styles.addButton}>Agregar</button>
+        <Link href='/admin/tic/new' className={styles.addButton}>Agregar</Link>
       </div>
 
       <table className={styles.table}>

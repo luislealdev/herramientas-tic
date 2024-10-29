@@ -6,6 +6,7 @@ import { Category, Image, Tool } from "@prisma/client";
 import { useRouter } from 'next/navigation';
 import { createUpdateTool } from "@/actions";
 import { useState } from 'react';
+import { useSession } from "next-auth/react";
 
 interface Props {
   tool: Partial<Tool> & { Images?: Image[], categories?: Category[] };
@@ -44,8 +45,23 @@ export const EditTICForm = ({ tool, categories }: Props) => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
     tool.categories ? tool.categories.map((category) => category.id) : []
   );
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { data: session } = useSession();
 
   const onSubmit = async (data: FormInputs) => {
+    setIsSubmitting(true);
+
+    register("categories", {
+      validate: () => selectedCategories.length > 0 || "Debes seleccionar al menos una categoría"
+    });
+
+    const userId = session?.user?.id;
+
+    if (!userId) {
+      alert("No se pudo obtener el ID del usuario");
+      return;
+    }
+
     // Validación manual de categorías seleccionadas
     if (selectedCategories.length === 0) {
       alert("Debes seleccionar al menos una categoría");
@@ -55,6 +71,8 @@ export const EditTICForm = ({ tool, categories }: Props) => {
     const formData = new FormData();
 
     const { images, logo, ...toolToSave } = data;
+
+    formData.append("userId", userId)
 
     if (tool.id) {
       formData.append("id", tool.id ?? "");
@@ -84,6 +102,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
       return;
     }
 
+    setIsSubmitting(false);
     router.replace(`/admin/tic/${updatedTool?.slug}`);
   };
 
@@ -115,21 +134,21 @@ export const EditTICForm = ({ tool, categories }: Props) => {
     const updatedCategories = selectedCategories.includes(categoryId)
       ? selectedCategories.filter((id) => id !== categoryId)
       : [...selectedCategories, categoryId];
-    
+
     setSelectedCategories(updatedCategories);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex column mt-20">
       <label htmlFor="name">Nombre de la herramienta</label>
-      <input 
-        {...register("name", { required: "El nombre es obligatorio" })} 
-        type="text" 
-        className="mt-10" 
-        placeholder="Ingrese texto aquí" 
+      <input
+        {...register("name", { required: "El nombre es obligatorio" })}
+        type="text"
+        className="mt-10"
+        placeholder="Ingrese texto aquí"
       />
       {errors.name && <p className="error">{errors.name.message}</p>}
-      
+
       <div className="mt-50 ph-40">
         <p>Categoría</p>
         {categories.map((category) => (
@@ -146,14 +165,14 @@ export const EditTICForm = ({ tool, categories }: Props) => {
         {/* Mensaje de error personalizado para categorías */}
         {selectedCategories.length === 0 && <p className="error">Debes seleccionar al menos una categoría</p>}
       </div>
-      
+
       <label htmlFor="description" className="mt-50">Descripción</label>
-      <TextArea 
-        {...register("description", { required: "La descripción es obligatoria" })} 
-        labelText="Ingrese texto aquí" 
+      <TextArea
+        {...register("description", { required: "La descripción es obligatoria" })}
+        labelText="Ingrese texto aquí"
       />
       {errors.description && <p className="error">{errors.description.message}</p>}
-      
+
       <div className="grid-c-2 mt-50 gap-30">
         <div>
           <p>Ventajas</p>
@@ -167,7 +186,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
             ))}
           </ul>
         </div>
-        
+
         <div>
           <p>Desventajas</p>
           <div className="flex mt-10 align-center gap-15">
@@ -192,26 +211,39 @@ export const EditTICForm = ({ tool, categories }: Props) => {
           <li key={index}>{useCase}</li>
         ))}
       </ul>
-      
+
       <div className="mt-50 grid-40-60 gap-30">
         <div>
           <p>Logo</p>
           <div className="flex mt-10 align-center gap-15">
-            <input {...register("logo", { required: "El logo es obligatorio" })} type="file" />
+            <input
+              {...register("logo", {
+                required: tool.logo ? false : "El logo es obligatorio"
+              })}
+              type="file"
+            />
           </div>
           {errors.logo && <p className="error">{errors.logo.message}</p>}
         </div>
-        
+
         <div>
           <p>Imágenes</p>
           <div className="flex mt-10 align-center gap-15">
-            <input {...register("images", { required: "Las imágenes son obligatorias" })} multiple type="file" />
+            <input
+              {...register("images", {
+                required: tool.Images && tool.Images.length > 0 ? false : "Las imágenes son obligatorias"
+              })}
+              multiple
+              type="file"
+            />
           </div>
           {errors.images && <p className="error">{errors.images.message}</p>}
         </div>
       </div>
 
-      <button className="mt-50">Guardar herramienta</button>
+      <button className="mt-50" disabled={isSubmitting}>
+        {isSubmitting ? "Guardando..." : "Guardar herramienta"}
+      </button>
     </form>
   );
 };
