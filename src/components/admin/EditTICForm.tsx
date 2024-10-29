@@ -49,6 +49,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
   const { data: session } = useSession();
 
   const onSubmit = async (data: FormInputs) => {
+
     setIsSubmitting(true);
 
     register("categories", {
@@ -85,7 +86,12 @@ export const EditTICForm = ({ tool, categories }: Props) => {
     formData.append("useCases", toolToSave.useCases);
     formData.append("categories", selectedCategories.join(','));
 
-    formData.append("images", logo ?? "");
+    console.log("Logo", logo);
+    
+
+    if (logo) {
+      formData.append("logo", logo); // Usa `logo` directamente sin acceder a `logo[0]`
+    }
 
     if (images) {
       for (let i = 0; i < images.length; i++) {
@@ -216,9 +222,9 @@ export const EditTICForm = ({ tool, categories }: Props) => {
           <div className="flex mt-10 align-center gap-15">
             <input
               {...register("logo", {
-                required: tool.Images ? false : "El logo es obligatorio"
+                required: tool.Images ? false : "El logo es obligatorio",
               })}
-              type="file"
+              type="file" // Asegúrate de que `multiple` no esté presente
             />
           </div>
           {errors.logo && <p className="error">{errors.logo.message}</p>}
