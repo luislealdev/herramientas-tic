@@ -19,8 +19,8 @@ interface FormInputs {
   advantages: string;
   disadvantages: string;
   useCases: string;
-  images?: FileList;
   categories: string;
+  images?: FileList;
   logo?: File;
 }
 
@@ -85,20 +85,18 @@ export const EditTICForm = ({ tool, categories }: Props) => {
     formData.append("useCases", toolToSave.useCases);
     formData.append("categories", selectedCategories.join(','));
 
+    formData.append("images", logo ?? "");
+
     if (images) {
       for (let i = 0; i < images.length; i++) {
         formData.append('images', images[i]);
       }
     }
 
-    if (logo) {
-      formData.append('logo', logo);
-    }
-
     const { ok, tool: updatedTool } = await createUpdateTool(formData);
 
     if (!ok) {
-      alert('Producto no se pudo actualizar');
+      alert('Herramienta no se pudo actualizar');
       return;
     }
 
@@ -218,7 +216,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
           <div className="flex mt-10 align-center gap-15">
             <input
               {...register("logo", {
-                required: tool.logo ? false : "El logo es obligatorio"
+                required: tool.Images ? false : "El logo es obligatorio"
               })}
               type="file"
             />

@@ -19,26 +19,30 @@ const toolSchema = z.object({
     advantages: z.string(),
     disadvantages: z.string(),
     useCases: z.string(),
-    userId: z.string()
+    userId: z.string().uuid(),
 });
 
 // Función para crear o actualizar una herramienta TIC
 export const createUpdateTool = async (formData: FormData) => {
 
+
     const data = Object.fromEntries(formData);
     const parsedData = toolSchema.safeParse(data);
-    const { userId, ...parsedTool } = parsedData;
+
+    console.log(parsedData);
 
 
-    if (!parsedTool.success) {
-        console.log(parsedTool.error);
+    if (!parsedData.success) {
+        console.log(parsedData.error);
         return {
             ok: false,
             message: 'Error en la validación de datos',
         };
     }
 
-    const toolData = parsedTool.data;
+
+    const { userId, ...toolData } = parsedData.data;
+
 
     if (!toolData.categories || toolData.categories.length === 0) {
         return {
@@ -61,19 +65,14 @@ export const createUpdateTool = async (formData: FormData) => {
             const disadvantages = rest.disadvantages.split(',');
             const useCases = rest.useCases.split(',');
 
-            let logo = null; // Variable para almacenar el logo
 
             if (id) {
-                // Actualizar herramienta existente
-                if (formData.get('logo')) {
-                    logo = await uploadImages([formData.get('logo') as File]);
-                }
 
                 tool = await prisma.tool.update({
                     where: { id },
                     data: {
-                        logo: logo ? logo[0] || undefined : undefined, // Actualiza el logo si se sube uno nuevo
                         ...rest,
+                        // logo: logo[0] ?? '', // Actualiza el logo si se sube uno nuevo
                         categories: {
                             connect: categories.map((id: string) => ({ id })),
                         },
@@ -90,13 +89,11 @@ export const createUpdateTool = async (formData: FormData) => {
                 });
             } else {
                 // Crear nueva herramienta
-                logo = (await uploadImages([formData.get('logo') as File]))?.[0] || '';
                 tool = await prisma.tool.create({
                     data: {
-                        // TODO: Get user from session or token
                         createdBy: userId,
-                        logo, // Guardar logo al crear
                         ...rest,
+                        // logo: logo[0] ?? '',
                         categories: {
                             connect: categories.map((id: string) => ({ id })),
                         },
@@ -113,20 +110,21 @@ export const createUpdateTool = async (formData: FormData) => {
                 });
             }
 
-            // Cargar las imágenes si están presentes
             if (formData.getAll('images')) {
                 const images = await uploadImages(formData.getAll('images') as File[]);
                 if (!images) {
-                    throw new Error('No se pudo cargar las imágenes, rolling back');
+                    throw new Error('No se pudo cargar las imágenes, rollingback');
                 }
 
                 await prisma.image.createMany({
                     data: images.map(image => ({
                         url: image!,
-                        toolId: toolData.id!,
+                        toolId: tool.id,
                     }))
                 });
+
             }
+
 
             return { tool };
         });
@@ -169,7 +167,6 @@ const uploadImages = async (images: File[]) => {
 
         const uploadedImages = await Promise.all(uploadPromises);
         return uploadedImages;
-
 
     } catch (error) {
 

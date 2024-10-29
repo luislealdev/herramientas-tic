@@ -19,7 +19,6 @@ const categorySchema = z.object({
 
 // Función para crear o actualizar una categoría
 export const createUpdateCategory = async (formData: FormData) => {
-  console.log('formData', formData);
   const data = Object.fromEntries(formData);
   const parsedCategory = categorySchema.safeParse(data);
 
