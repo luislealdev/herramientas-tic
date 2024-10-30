@@ -12,7 +12,7 @@ cloudinary.config(process.env.CLOUDINARY_URL ?? '');
 const toolSchema = z.object({
     id: z.string().uuid().optional().nullable(),
     name: z.string().min(3).max(255),
-    description: z.string().min(3).max(255),
+    description: z.string().min(3),
     categories: z.string(),
     advantages: z.string(),
     disadvantages: z.string(),
