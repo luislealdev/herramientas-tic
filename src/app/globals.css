@@ -176,16 +176,6 @@ input[type="checkbox"]:checked {
   color: #333;
 }
 
-/* Ajuste de márgenes para los inputs */
-.login-input {
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-bottom: 1.5rem; /* Aumentar margen inferior */
-  width: 100%;
-  font-size: 16px;
-}
-
 /* Botones de acción: ajuste de espacio entre ellos */
 .modal-actions {
   display: flex;
