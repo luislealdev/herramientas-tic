@@ -2,48 +2,53 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-    id       String @id @default(uuid())
-    email    String @unique
-    password String
-    tool     Tool[]
+  id       String @id @default(uuid())
+  email    String @unique
+  password String
+  Log      Log[]
 }
 
 model Image {
-    id     String @id @default(uuid())
-    url    String
-    tool   Tool   @relation(fields: [toolId], references: [id])
-    toolId String
+  id     String @id @default(uuid())
+  url    String
+  tool   Tool   @relation(fields: [toolId], references: [id])
+  toolId String
 }
 
 model Tool {
-    id            String     @id @default(uuid())
-    name          String
-    description   String
-    advantages    String[]
-    disadvantages String[]
-    useCases      String[]
-    // logo          String
-    images        Image[]
-    createdAt     DateTime   @default(now())
-    updatedAt     DateTime   @updatedAt
-    categories    Category[]
-    user          User       @relation(fields: [createdBy], references: [id])
-    createdBy     String
-    slug          String
+  id            String     @id @default(uuid())
+  name          String
+  description   String
+  advantages    String[]
+  disadvantages String[]
+  useCases      String[]
+  logo          String
+  images        Image[]
+  categories    Category[]
+  slug          String
+}
+
+model Log {
+  id        String   @id @default(uuid())
+  accion    String
+  user      User     @relation(fields: [hecho_por], references: [id])
+  hecho_por String
+  fecha     DateTime @default(now())
+  detalles  Json
 }
 
 model Category {
-    id    String @id @default(uuid())
-    tools Tool[]
-    name  String
-    slug  String
+  id    String @id @default(uuid())
+  tools Tool[]
+  name  String
+  slug  String
 }
