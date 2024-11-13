@@ -19,6 +19,7 @@ export async function generateMetadata(
     const slug = params.slug;
     // fetch data
     const tool = await getToolBySlug(slug);
+    
     // optionally access and extend (rather than replace) parent metadata
     // const previousImages = (await parent).openGraph?.images || []
     return {
@@ -27,7 +28,7 @@ export async function generateMetadata(
         openGraph: {
             title: tool?.name ?? "Herramienta no encontrada",
             description: tool?.description ?? "",
-            images: [`${tool?.images[1]}`],
+            images: [`${tool?.images[0]}`],
         },
     };
 }

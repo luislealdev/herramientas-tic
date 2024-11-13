@@ -5,8 +5,24 @@ import 'carbon-components/css/carbon-components.min.css';
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Herramientas de gestión de proyectos de desarrollo de software",
+  title: "Ticnify | Herramientas de gestión de proyectos",
   description: "Herramientas TIC para gestores de proyectos de desarrollo de software y sistemas de información.",
+  keywords: "herramientas TIC, gestión de proyectos, desarrollo de software, sistemas de información",
+  openGraph: {
+    title: "Herramientas de gestión de proyectos de desarrollo de software",
+    description: "Herramientas TIC para gestores de proyectos de desarrollo de software y sistemas de información.",
+    url: "https://herramientas-tic-one.vercel.app/",
+    type: "website",
+    images: [
+      {
+        url: "https://herramientas-tic-one.vercel.app/img/logo.png",
+        width: 800,
+        height: 600,
+        alt: "Herramientas TIC",
+      },
+    ],
+  },
+  robots: "index, follow",
 };
 
 export default function RootLayout({
