@@ -4,10 +4,27 @@ import prisma from '@/lib/prisma';
 interface PaginationOptions {
     page?: number,
     take?: number,
+    search?: string,
+    category?: string,
 }
-export const getPaginatedTools = async ({ page = 1, take = 7 }: PaginationOptions) => {
+
+export const getPaginatedTools = async ({ page = 1, take = 7, search = '', category = '' }: PaginationOptions) => {
     if (isNaN(Number(page))) page = 1;
     if (page < 1) page = 1;
+
+    const where: {
+        OR?: { name?: { contains: string, mode: 'insensitive' }, description?: { contains: string, mode: 'insensitive' } }[],
+        categories?: { some: { name: { in: string[] } } }
+    } = {};
+
+    if (search) {
+        where.OR = [
+            { name: { contains: search, mode: 'insensitive' } },
+            { description: { contains: search, mode: 'insensitive' } },
+        ];
+    } else if (category) {
+        where.categories = { some: { name: { in: category.split(',') } } };
+    }
 
     try {
         const tools = await prisma.tool.findMany({
@@ -16,14 +33,13 @@ export const getPaginatedTools = async ({ page = 1, take = 7 }: PaginationOption
             orderBy: {
                 createdAt: 'desc'
             },
+            where,
             include: {
                 images: true
             }
         });
-
-        const totalCount = await prisma.tool.count({});
+        const totalCount = await prisma.tool.count({ where });
         const totalPages = Math.ceil(totalCount / take);
-
         return {
             currentPage: page,
             totalPages,
