@@ -95,7 +95,7 @@ const HomePage: React.FC<Props> = ({ searchParams }) => {
               onClick={() => handleCategoryClick(cat)}
             >
               {cat}
-            </button>
+            </button> 
           ))}
         </div>
       </div>

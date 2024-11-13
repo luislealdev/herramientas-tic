@@ -173,7 +173,6 @@ input[type="checkbox"]:checked {
 .modal-subtitle {
   font-size: 14px;
   margin-bottom: 2rem; /* Más espacio debajo del subtítulo */
-  color: #333;
 }
 
 /* Botones de acción: ajuste de espacio entre ellos */
@@ -185,11 +184,15 @@ input[type="checkbox"]:checked {
 }
 
 .submit-button {
-  background-color: #0062ff;
+  /* background-color: #0062ff; */
   color: white;
   padding: 0.85rem 2rem; /* Aumentar el tamaño del botón */
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
+}
+
+.bg-gray-m{
+  background-color: #f4f4f4 !important;
 }
