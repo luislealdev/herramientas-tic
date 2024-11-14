@@ -23,6 +23,7 @@ interface Tool {
   createdBy: string;
   slug: string;
   images: { id: string; url: string; toolId: string; }[];
+  logo: string;
 }
 
 const HomePage: React.FC<Props> = ({ searchParams }) => {
@@ -103,7 +104,7 @@ const HomePage: React.FC<Props> = ({ searchParams }) => {
         {tools.map(tool => (
           <ToolCardUI
             key={tool.slug}
-            img={tool.images[0].url}
+            img={tool.logo ? tool.logo : tool.images[0].url}
             toolName={tool.name}
             description={tool.description.substring(0, 150) + '...'}
             slug={tool.slug}
