@@ -6,7 +6,7 @@ import { v2 as cloudinary } from 'cloudinary';
 import { Tool } from '@prisma/client';
 
 // Configuración de Cloudinary para subir imágenes al folder 'herramientas-tic'
-cloudinary.config({ cloudinary_url: process.env.CLOUDINARY_URL ?? '' });
+cloudinary.config({ cloudinary_url: process.env.CLOUDINARY_URL ?? '', cloud_name: 'dflvbav0j' });
 
 // Esquema de validación para la herramienta TIC
 const toolSchema = z.object({
