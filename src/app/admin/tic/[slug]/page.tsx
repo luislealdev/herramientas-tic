@@ -22,8 +22,6 @@ const EditTIC = async ({ params }: Props) => {
     }
 
     const title = (slug === 'new') ? 'Agregar' : 'Editar';
-
-    console.log(tool);
     
     return (
         <main className='p-100'>

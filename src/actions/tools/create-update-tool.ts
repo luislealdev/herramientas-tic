@@ -15,6 +15,7 @@ const toolSchema = z.object({
     description: z.string().min(3),
     categories: z.string(),
     advantages: z.string(),
+    characteristics: z.string(),
     disadvantages: z.string(),
     useCases: z.string(),
     userId: z.string().uuid(),
@@ -59,6 +60,7 @@ export const createUpdateTool = async (formData: FormData) => {
             const advantages = rest.advantages.split(',');
             const disadvantages = rest.disadvantages.split(',');
             const useCases = rest.useCases.split(',');
+            const characteristics = rest.characteristics.split(',');
 
 
             if (id) {
@@ -76,6 +78,9 @@ export const createUpdateTool = async (formData: FormData) => {
                         },
                         disadvantages: {
                             set: disadvantages,
+                        },
+                        characteristics: {
+                            set: characteristics,
                         },
                         useCases: {
                             set: useCases,
@@ -97,6 +102,9 @@ export const createUpdateTool = async (formData: FormData) => {
                         },
                         disadvantages: {
                             set: disadvantages,
+                        },
+                        characteristics: {
+                            set: characteristics,
                         },
                         useCases: {
                             set: useCases,

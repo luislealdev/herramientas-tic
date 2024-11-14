@@ -25,20 +25,21 @@ model Image {
 }
 
 model Tool {
-    id            String     @id @default(uuid())
-    name          String
-    description   String
-    advantages    String[]
-    disadvantages String[]
-    useCases      String[]
+    id              String     @id @default(uuid())
+    name            String
+    description     String
+    advantages      String[]
+    disadvantages   String[]
+    characteristics String[]
+    useCases        String[]
     // logo          String
-    images        Image[]
-    createdAt     DateTime   @default(now())
-    updatedAt     DateTime   @updatedAt
-    categories    Category[]
-    user          User       @relation(fields: [createdBy], references: [id])
-    createdBy     String
-    slug          String
+    images          Image[]
+    createdAt       DateTime   @default(now())
+    updatedAt       DateTime   @updatedAt
+    categories      Category[]
+    user            User       @relation(fields: [createdBy], references: [id])
+    createdBy       String
+    slug            String
 }
 
 model Category {

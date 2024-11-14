@@ -21,6 +21,7 @@ interface FormInputs {
   advantages: string;
   disadvantages: string;
   useCases: string;
+  characteristics: string;
   categories: string;
   images?: FileList;
   logo?: File;
@@ -35,6 +36,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
       advantages: tool.advantages ? tool.advantages.join(',') : '',
       disadvantages: tool.disadvantages ? tool.disadvantages.join(',') : '',
       useCases: tool.useCases ? tool.useCases.join(',') : '',
+      characteristics: tool.characteristics ? tool.characteristics.join(',') : '',
       categories: tool.categories ? tool.categories.map((category) => category.id).join(',') : '',
       images: undefined,
       logo: undefined,
@@ -44,6 +46,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
   const [advantages, setAdvantages] = useState<string[]>(tool.advantages || []);
   const [disadvantages, setDisadvantages] = useState<string[]>(tool.disadvantages || []);
   const [useCases, setUseCases] = useState<string[]>(tool.useCases || []);
+  const [characteristics, setCharacteristics] = useState<string[]>(tool.characteristics || []);
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
     tool.categories ? tool.categories.map((category) => category.id) : []
   );
@@ -60,6 +63,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
       setValue('advantages', tool.advantages?.join(',') || '');
       setValue('disadvantages', tool.disadvantages?.join(',') || '');
       setValue('useCases', tool.useCases?.join(',') || '');
+      setValue('characteristics', tool.characteristics?.join(',') || '');
       setValue('categories', tool.categories?.map((category) => category.id).join(',') || '');
     }
   }, [tool, setValue]);
@@ -132,6 +136,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
     formData.append("advantages", toolToSave.advantages);
     formData.append("disadvantages", toolToSave.disadvantages);
     formData.append("useCases", toolToSave.useCases);
+    formData.append("characteristics", toolToSave.characteristics);
     formData.append("categories", selectedCategories.join(','));
 
     if (logo) {
@@ -182,6 +187,14 @@ export const EditTICForm = ({ tool, categories }: Props) => {
     if (useCase) {
       setUseCases([...useCases, useCase]);
       setValue("useCases", [...useCases, useCase].join(','));
+    }
+  };
+
+  const handleAddCharacteristic = () => {
+    const characteristic = (document.getElementById("characteristicInput") as HTMLInputElement).value;
+    if (characteristic) {
+      setCharacteristics([...characteristics, characteristic]);
+      setValue("characteristics", [...characteristics, characteristic].join(','));
     }
   };
 
@@ -255,17 +268,32 @@ export const EditTICForm = ({ tool, categories }: Props) => {
         </div>
       </div>
 
-      <p className="mt-50">Casos de uso</p>
-      <div className="flex mt-10 align-center gap-15">
-        <Add onClick={handleAddUseCase} />
-        <input id="useCaseInput" type="text" placeholder="Ingrese un caso de uso" />
+      <div className="grid-c-2 mt-50 gap-30">
+        <div>
+          <p className="mt-50">Casos de uso</p>
+          <div className="flex mt-10 align-center gap-15">
+            <Add onClick={handleAddUseCase} />
+            <input id="useCaseInput" type="text" placeholder="Ingrese un caso de uso" />
+          </div>
+          <ul>
+            {useCases.map((useCase, index) => (
+              <li key={index}>{useCase}</li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p className="mt-50">Características</p>
+          <div className="flex mt-10 align-center gap-15">
+            <Add onClick={handleAddCharacteristic} />
+            <input id="characteristicInput" type="text" placeholder="Ingrese una característica" />
+          </div>
+          <ul>
+            {characteristics.map((characteristic, index) => (
+              <li key={index}>{characteristic}</li>
+            ))}
+          </ul>
+        </div>
       </div>
-      <ul>
-        {useCases.map((useCase, index) => (
-          <li key={index}>{useCase}</li>
-        ))}
-      </ul>
-
       <div className="mt-50 grid-40-60 gap-30">
         <div>
           <p>Logo</p>
@@ -297,16 +325,16 @@ export const EditTICForm = ({ tool, categories }: Props) => {
       </div>
 
       {existingImages.length > 0 && (
-        <div className="grid-c-4 mt-20 gap-30">
+        <div className="existing-images-container mt-20">
           {existingImages.map((image, index) => (
-            <div key={index} style={{ position: 'relative' }}>
+            <div key={index} className="existing-image-item">
               <Image width={1000} height={1000} src={image} alt={`Existing Image ${index}`} className="existing-image max-width" />
               <Button
-                className="no-border p-10"
-                style={{ position: "absolute", top: 0, right: 0 }}
+                kind="danger"
                 renderIcon={TrashCan}
                 onClick={() => handleExistingImageRemove(image)}
               >
+                Eliminar
               </Button>
             </div>
           ))}
@@ -314,11 +342,12 @@ export const EditTICForm = ({ tool, categories }: Props) => {
       )}
 
       {previewImages.length > 0 && (
-        <div className="grid-c-4 mt-20 gap-30">
+        <div className="preview-container mt-20">
           {previewImages.map((src, index) => (
-            <div key={index} style={{ position: 'relative' }}>
-              <Image width={1000} height={1000} src={src} alt={`Preview ${index}`} className="preview-image auto-height" />
+            <div key={index} className="preview-item">
+              <Image width={1000} height={1000} src={src} alt={`Preview ${index}`} className="preview-image max-width" />
               <Button
+                kind="danger"
                 renderIcon={TrashCan}
                 onClick={() => handleImageRemove(index)}
               >
@@ -329,7 +358,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
         </div>
       )}
 
-      <button className="mt-50 p-10" disabled={isSubmitting}>
+      <button className="mt-50" disabled={isSubmitting}>
         {isSubmitting ? "Guardando..." : "Guardar herramienta"}
       </button>
     </form>
