@@ -73,6 +73,10 @@ export const EditTICForm = ({ tool, categories }: Props) => {
       const files = Array.from(event.target.files);
       const compressedImages = await Promise.all(
         files.map(async (file) => {
+          if (!(file instanceof File)) {
+            console.error('El archivo no es una instancia de File');
+            return '';
+          }
           try {
             const options = {
               maxSizeMB: 1,
@@ -87,7 +91,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
           }
         })
       );
-      setPreviewImages([...previewImages, ...compressedImages]);
+      setPreviewImages([...previewImages, ...compressedImages.filter(Boolean)]);
       setNewImages([...newImages, ...files]);
     }
   };
@@ -140,17 +144,15 @@ export const EditTICForm = ({ tool, categories }: Props) => {
     formData.append("categories", selectedCategories.join(','));
 
     if (logo) {
-      const options = {
-        maxSizeMB: 1,
-        maxWidthOrHeight: 800,
-        useWebWorker: true,
-      }
-      const compressedLogo = await imageCompression(logo, options);
-      formData.append("logo", compressedLogo);
+      formData.append("logo", logo);
     }
 
     if (newImages) {
       for (let i = 0; i < newImages.length; i++) {
+        if (!(newImages[i] instanceof File)) {
+          console.error('El archivo no es una instancia de File');
+          continue;
+        }
         const options = {
           maxSizeMB: 1,
           maxWidthOrHeight: 800,
@@ -165,7 +167,6 @@ export const EditTICForm = ({ tool, categories }: Props) => {
 
     if (!ok) {
       alert('Herramienta no se pudo actualizar');
-      setIsSubmitting(false);
       return;
     }
 
@@ -275,32 +276,28 @@ export const EditTICForm = ({ tool, categories }: Props) => {
         </div>
       </div>
 
-      <div className="grid-c-2 mt-50 gap-30">
-        <div>
-          <p className="mt-50">Casos de uso</p>
-          <div className="flex mt-10 align-center gap-15">
-            <Add onClick={handleAddUseCase} />
-            <input id="useCaseInput" type="text" placeholder="Ingrese un caso de uso" />
-          </div>
-          <ul>
-            {useCases.map((useCase, index) => (
-              <li key={index}>{useCase}</li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <p className="mt-50">Características</p>
-          <div className="flex mt-10 align-center gap-15">
-            <Add onClick={handleAddCharacteristic} />
-            <input id="characteristicInput" type="text" placeholder="Ingrese una característica" />
-          </div>
-          <ul>
-            {characteristics.map((characteristic, index) => (
-              <li key={index}>{characteristic}</li>
-            ))}
-          </ul>
-        </div>
+      <p className="mt-50">Casos de uso</p>
+      <div className="flex mt-10 align-center gap-15">
+        <Add onClick={handleAddUseCase} />
+        <input id="useCaseInput" type="text" placeholder="Ingrese un caso de uso" />
       </div>
+      <ul>
+        {useCases.map((useCase, index) => (
+          <li key={index}>{useCase}</li>
+        ))}
+      </ul>
+
+      <p className="mt-50">Características</p>
+      <div className="flex mt-10 align-center gap-15">
+        <Add onClick={handleAddCharacteristic} />
+        <input id="characteristicInput" type="text" placeholder="Ingrese una característica" />
+      </div>
+      <ul>
+        {characteristics.map((characteristic, index) => (
+          <li key={index}>{characteristic}</li>
+        ))}
+      </ul>
+
       <div className="mt-50 grid-40-60 gap-30">
         <div>
           <p>Logo</p>
@@ -332,22 +329,16 @@ export const EditTICForm = ({ tool, categories }: Props) => {
       </div>
 
       {existingImages.length > 0 && (
-        <div className="grid-c-4 gap-30 mt-20">
+        <div className="existing-images-container mt-20">
           {existingImages.map((image, index) => (
-            <div key={index} style={{
-              position: 'relative'
-            }}>
+            <div key={index} className="existing-image-item">
               <Image width={1000} height={1000} src={image} alt={`Existing Image ${index}`} className="existing-image max-width" />
               <Button
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                }}
-                className="no-border p-10"
+                kind="danger"
                 renderIcon={TrashCan}
                 onClick={() => handleExistingImageRemove(image)}
               >
+                Eliminar
               </Button>
             </div>
           ))}
@@ -355,27 +346,23 @@ export const EditTICForm = ({ tool, categories }: Props) => {
       )}
 
       {previewImages.length > 0 && (
-        <div className="grid-c-4 gap-30 mt-20">
+        <div className="preview-container mt-20">
           {previewImages.map((src, index) => (
             <div key={index} className="preview-item">
               <Image width={1000} height={1000} src={src} alt={`Preview ${index}`} className="preview-image max-width" />
               <Button
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                }}
-                className="no-border p-10"
+                kind="danger"
                 renderIcon={TrashCan}
                 onClick={() => handleImageRemove(index)}
               >
+                Eliminar
               </Button>
             </div>
           ))}
         </div>
       )}
 
-      <button className="mt-50 p-10" disabled={isSubmitting}>
+      <button className="mt-50" disabled={isSubmitting}>
         {isSubmitting ? "Guardando..." : "Guardar herramienta"}
       </button>
     </form>
