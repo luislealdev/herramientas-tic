@@ -215,6 +215,10 @@ input[type="checkbox"]:checked {
   padding-bottom: 50px;
 }
 
+.flex-wrap {
+  flex-flow: wrap;
+}
+
 @media (max-width: 770px) {
   .column-in-mobile {
     display: flex;
@@ -227,3 +231,4 @@ input[type="checkbox"]:checked {
     grid-template-columns: repeat(2, 1fr) !important;
   }
 }
+

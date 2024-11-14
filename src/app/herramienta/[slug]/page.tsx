@@ -50,9 +50,15 @@ const ToolPage = async ({ params }: Props) => {
                     <h1>{tool.name}</h1>
                     <p className='f-size-16 justify-text'>{tool.description}</p>
                     <h2 className='mt-20'>Casos de uso</h2>
-                    <div className='flex gap-30'>
+                    <div className='flex flex-wrap gap-30'>
                         {
                             tool.useCases.map(useCase => <p className='bg-gray-m center-text p-5 f-size-14' key={useCase}>{useCase}</p>)
+                        }
+                    </div>
+                    <h2 className='mt-20'>Características</h2>
+                    <div className='flex flex-wrap gap-5 mt-10'>
+                        {
+                            tool.characteristics.map(c => <p className='bg-gray-m center-text p-5 f-size-14' key={c}>{c}</p>)
                         }
                     </div>
                     <div className='grid-c-2 gap-30'>
