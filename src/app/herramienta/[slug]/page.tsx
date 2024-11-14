@@ -45,7 +45,7 @@ const ToolPage = async ({ params }: Props) => {
     return (
         <main>
             <section className='grid-c-2 p-100'>
-                <Image className='max-width p-40' alt={tool.name} src={tool.images[0]} width={1000} height={1000} />
+                <Image className='max-width p-40' alt={tool.name} src={tool.logo ? tool.logo : tool.images[0]} width={1000} height={1000} />
                 <div>
                     <h1>{tool.name}</h1>
                     <p className='f-size-16 justify-text'>{tool.description}</p>
