@@ -21,7 +21,7 @@ h6 {
   font-style: bold;
 }
 
-div{
+div {
   width: 100%;
 }
 
@@ -133,6 +133,7 @@ input[type="checkbox"]:checked {
   font-weight: 700;
   font-style: italic;
 }
+
 /* Overlay para centrar el modal */
 .modal-overlay {
   position: fixed;
@@ -146,33 +147,38 @@ input[type="checkbox"]:checked {
   align-items: center;
   z-index: 1000;
 }
+
 /* Aumenta el ancho del modal */
 .modal-container {
   background-color: #f4f4f4;
   padding: 2.5rem;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 700px; /* Aumentar el ancho */
+  width: 700px;
+  /* Aumentar el ancho */
 }
 
 /* Añadir más espacio entre los elementos del formulario */
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem; /* Aumentar el espacio entre cada elemento del formulario */
+  gap: 1.5rem;
+  /* Aumentar el espacio entre cada elemento del formulario */
 }
 
 /* Ajusta la separación entre el título y el formulario */
 .modal-title {
   font-size: 24px;
   font-weight: bold;
-  margin-bottom: 1.5rem; /* Aumentar el espacio debajo del título */
+  margin-bottom: 1.5rem;
+  /* Aumentar el espacio debajo del título */
   color: #000;
 }
 
 .modal-subtitle {
   font-size: 14px;
-  margin-bottom: 2rem; /* Más espacio debajo del subtítulo */
+  margin-bottom: 2rem;
+  /* Más espacio debajo del subtítulo */
 }
 
 /* Botones de acción: ajuste de espacio entre ellos */
@@ -180,19 +186,31 @@ input[type="checkbox"]:checked {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 2rem; /* Más espacio antes de los botones */
+  margin-top: 2rem;
+  /* Más espacio antes de los botones */
 }
 
 .submit-button {
   /* background-color: #0062ff; */
   color: white;
-  padding: 0.85rem 2rem; /* Aumentar el tamaño del botón */
+  padding: 0.85rem 2rem;
+  /* Aumentar el tamaño del botón */
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
 }
 
-.bg-gray-m{
+.bg-gray-m {
   background-color: #f4f4f4 !important;
+}
+
+.ph-100 {
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
+.pv-50 {
+  padding-top: 50px;
+  padding-bottom: 50px;
 }

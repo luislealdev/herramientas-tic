@@ -30,6 +30,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  // Get the current year
+  const year = new Date().getFullYear();
+
   return (
     <html lang="es-co">
       <head>
@@ -50,6 +54,9 @@ export default function RootLayout({
             <Link href="/contacto" className="gray-text">Contacto</Link>
           </nav>
           {children}
+          <footer className="p-20 bg-gray-m mt-50">
+            <p className="center-text">Ticnify {year} © Todos los derechos reservados</p>
+          </footer>
         </Providers>
       </body>
     </html>
