@@ -325,16 +325,22 @@ export const EditTICForm = ({ tool, categories }: Props) => {
       </div>
 
       {existingImages.length > 0 && (
-        <div className="existing-images-container mt-20">
+        <div className="grid-c-4 gap-30 mt-20">
           {existingImages.map((image, index) => (
-            <div key={index} className="existing-image-item">
+            <div key={index} style={{
+              position: 'relative'
+            }}>
               <Image width={1000} height={1000} src={image} alt={`Existing Image ${index}`} className="existing-image max-width" />
               <Button
-                kind="danger"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                }}
+                className="no-border p-10"
                 renderIcon={TrashCan}
                 onClick={() => handleExistingImageRemove(image)}
               >
-                Eliminar
               </Button>
             </div>
           ))}
@@ -342,23 +348,27 @@ export const EditTICForm = ({ tool, categories }: Props) => {
       )}
 
       {previewImages.length > 0 && (
-        <div className="preview-container mt-20">
+        <div className="grid-c-4 gap-30 mt-20">
           {previewImages.map((src, index) => (
             <div key={index} className="preview-item">
               <Image width={1000} height={1000} src={src} alt={`Preview ${index}`} className="preview-image max-width" />
               <Button
-                kind="danger"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                }}
+                className="no-border p-10"
                 renderIcon={TrashCan}
                 onClick={() => handleImageRemove(index)}
               >
-                Eliminar
               </Button>
             </div>
           ))}
         </div>
       )}
 
-      <button className="mt-50" disabled={isSubmitting}>
+      <button className="mt-50 p-10" disabled={isSubmitting}>
         {isSubmitting ? "Guardando..." : "Guardar herramienta"}
       </button>
     </form>
