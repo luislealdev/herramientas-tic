@@ -314,10 +314,10 @@ export const EditTICForm = ({ tool, categories }: Props) => {
       )}
 
       {previewImages.length > 0 && (
-        <div className="grid-c-4 mt-20">
+        <div className="grid-c-4 mt-20 gap-30">
           {previewImages.map((src, index) => (
-            <div key={index} className="preview-item">
-              <Image width={400} height={400} src={src} alt={`Preview ${index}`} className="preview-image auto-height" />
+            <div key={index} style={{ position: 'relative' }}>
+              <Image width={1000} height={1000} src={src} alt={`Preview ${index}`} className="preview-image auto-height" />
               <Button
                 renderIcon={TrashCan}
                 onClick={() => handleImageRemove(index)}
@@ -329,7 +329,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
         </div>
       )}
 
-      <button className="mt-50" disabled={isSubmitting}>
+      <button className="mt-50 p-10" disabled={isSubmitting}>
         {isSubmitting ? "Guardando..." : "Guardar herramienta"}
       </button>
     </form>
