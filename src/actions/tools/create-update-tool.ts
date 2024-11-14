@@ -6,7 +6,7 @@ import { v2 as cloudinary } from 'cloudinary';
 import { Tool } from '@prisma/client';
 
 // Configuración de Cloudinary para subir imágenes al folder 'herramientas-tic'
-cloudinary.config(process.env.CLOUDINARY_URL ?? '');
+cloudinary.config({ cloudinary_url: process.env.CLOUDINARY_URL ?? '' });
 
 // Esquema de validación para la herramienta TIC
 const toolSchema = z.object({
@@ -139,36 +139,36 @@ export const createUpdateTool = async (formData: FormData) => {
 };
 
 
-// Función para subir imágenes a Cloudinary
 const uploadImages = async (images: File[]) => {
-
     try {
-
+        // Limita las promesas en paralelo si es necesario (por ejemplo 5 a la vez)
         const uploadPromises = images.map(async (image) => {
-
             try {
                 const buffer = await image.arrayBuffer();
                 const base64Image = Buffer.from(buffer).toString('base64');
 
-                return cloudinary.uploader.upload(`data:image/png;base64,${base64Image}`)
-                    .then(r => r.secure_url);
+                // Aplica transformaciones para reducir la calidad y formato
+                const response = await cloudinary.uploader.upload(
+                    `data:image/jpeg;base64,${base64Image}`,  // Cambiar PNG a JPEG para mejorar la compresión
+                    {
+                        transformation: [
+                            { quality: "auto:low", fetch_format: "auto" }, // Usa formato automático y reduce la calidad
+                            { width: 800, crop: "scale" } // Redimensiona a un ancho razonable, ajustando el tamaño
+                        ]
+                    }
+                );
 
+                return response.secure_url;
             } catch (error) {
-                console.log(error);
+                console.error('Error al subir imagen:', error);
                 return null;
             }
-        })
-
+        });
 
         const uploadedImages = await Promise.all(uploadPromises);
-        return uploadedImages;
-
+        return uploadedImages.filter((url) => url !== null); // Filtra cualquier valor null
     } catch (error) {
-
-        console.log(error);
+        console.error('Error en la carga de imágenes:', error);
         return null;
-
     }
-
-
-}
+};

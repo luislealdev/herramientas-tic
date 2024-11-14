@@ -3,8 +3,8 @@ import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Iniciar Sesión",
-    description: "Iniciar sesión en la plataforma de gestión de proyectos de desarrollo de software.",
+    title: "Administración",
+    description: "Administración de la plataforma",
 };
 
 export default async function RootLayout({
