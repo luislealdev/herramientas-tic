@@ -102,7 +102,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
   };
 
   const onSubmit = async (data: FormInputs) => {
-    // setIsSubmitting(true);
+    setIsSubmitting(true);
 
     register("categories", {
       validate: () => selectedCategories.length > 0 || "Debes seleccionar al menos una categoría"
@@ -165,6 +165,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
 
     if (!ok) {
       alert('Herramienta no se pudo actualizar');
+      setIsSubmitting(false);
       return;
     }
 
