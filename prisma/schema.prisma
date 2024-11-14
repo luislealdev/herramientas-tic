@@ -32,7 +32,6 @@ model Tool {
     disadvantages   String[]
     characteristics String[]
     useCases        String[]
-    // logo          String
     images          Image[]
     createdAt       DateTime   @default(now())
     updatedAt       DateTime   @updatedAt
