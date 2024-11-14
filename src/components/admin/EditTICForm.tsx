@@ -56,6 +56,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
   const [newImages, setNewImages] = useState<File[]>([]);
   const [existingImages, setExistingImages] = useState<string[]>(tool.images || []);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [logoFile, setLogoFile] = useState<File | null>(null);
 
   useEffect(() => {
     if (tool) {
@@ -101,6 +102,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       setLogoPreview(URL.createObjectURL(file));
+      setLogoFile(file);
       setValue('logo', file);
     }
   };
@@ -136,7 +138,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
 
     const formData = new FormData();
 
-    const { logo, ...toolToSave } = data;
+    const toolToSave = { ...data };
 
     formData.append("userId", userId)
 
@@ -152,11 +154,11 @@ export const EditTICForm = ({ tool, categories }: Props) => {
     formData.append("characteristics", toolToSave.characteristics);
     formData.append("categories", selectedCategories.join(','));
 
-    if (logo) {
-      formData.append("logo", logo);
+    if (logoFile) {
+      formData.append("logo", logoFile);
     }
 
-    if (newImages) {
+    if (newImages.length > 0) {
       for (let i = 0; i < newImages.length; i++) {
         if (!(newImages[i] instanceof File)) {
           console.error('El archivo no es una instancia de File');
@@ -170,6 +172,8 @@ export const EditTICForm = ({ tool, categories }: Props) => {
         const compressedFile = await imageCompression(newImages[i], options);
         formData.append('images', compressedFile);
       }
+    } else {
+      existingImages.forEach(image => formData.append('existingImages', image));
     }
 
     const { ok, tool: updatedTool } = await createUpdateTool(formData);
@@ -191,12 +195,24 @@ export const EditTICForm = ({ tool, categories }: Props) => {
     }
   };
 
+  const handleRemoveAdvantage = (index: number) => {
+    const updatedAdvantages = advantages.filter((_, i) => i !== index);
+    setAdvantages(updatedAdvantages);
+    setValue("advantages", updatedAdvantages.join(','));
+  };
+
   const handleAddDisadvantage = () => {
     const disadvantage = (document.getElementById("disadvantageInput") as HTMLInputElement).value;
     if (disadvantage) {
       setDisadvantages([...disadvantages, disadvantage]);
       setValue("disadvantages", [...disadvantages, disadvantage].join(','));
     }
+  };
+
+  const handleRemoveDisadvantage = (index: number) => {
+    const updatedDisadvantages = disadvantages.filter((_, i) => i !== index);
+    setDisadvantages(updatedDisadvantages);
+    setValue("disadvantages", updatedDisadvantages.join(','));
   };
 
   const handleAddUseCase = () => {
@@ -207,12 +223,24 @@ export const EditTICForm = ({ tool, categories }: Props) => {
     }
   };
 
+  const handleRemoveUseCase = (index: number) => {
+    const updatedUseCases = useCases.filter((_, i) => i !== index);
+    setUseCases(updatedUseCases);
+    setValue("useCases", updatedUseCases.join(','));
+  };
+
   const handleAddCharacteristic = () => {
     const characteristic = (document.getElementById("characteristicInput") as HTMLInputElement).value;
     if (characteristic) {
       setCharacteristics([...characteristics, characteristic]);
       setValue("characteristics", [...characteristics, characteristic].join(','));
     }
+  };
+
+  const handleRemoveCharacteristic = (index: number) => {
+    const updatedCharacteristics = characteristics.filter((_, i) => i !== index);
+    setCharacteristics(updatedCharacteristics);
+    setValue("characteristics", updatedCharacteristics.join(','));
   };
 
   const handleCategoryChange = (categoryId: string) => {
@@ -266,7 +294,16 @@ export const EditTICForm = ({ tool, categories }: Props) => {
           </div>
           <ul>
             {advantages.map((adv, index) => (
-              <li key={index}>{adv}</li>
+              <li key={index}>
+                {adv}
+                <Button
+                  kind="danger"
+                  renderIcon={TrashCan}
+                  onClick={() => handleRemoveAdvantage(index)}
+                >
+                  Eliminar
+                </Button>
+              </li>
             ))}
           </ul>
         </div>
@@ -279,7 +316,16 @@ export const EditTICForm = ({ tool, categories }: Props) => {
           </div>
           <ul>
             {disadvantages.map((disadv, index) => (
-              <li key={index}>{disadv}</li>
+              <li key={index}>
+                {disadv}
+                <Button
+                  kind="danger"
+                  renderIcon={TrashCan}
+                  onClick={() => handleRemoveDisadvantage(index)}
+                >
+                  Eliminar
+                </Button>
+              </li>
             ))}
           </ul>
         </div>
@@ -292,7 +338,16 @@ export const EditTICForm = ({ tool, categories }: Props) => {
       </div>
       <ul>
         {useCases.map((useCase, index) => (
-          <li key={index}>{useCase}</li>
+          <li key={index}>
+            {useCase}
+            <Button
+              kind="danger"
+              renderIcon={TrashCan}
+              onClick={() => handleRemoveUseCase(index)}
+            >
+              Eliminar
+            </Button>
+          </li>
         ))}
       </ul>
 
@@ -303,7 +358,16 @@ export const EditTICForm = ({ tool, categories }: Props) => {
       </div>
       <ul>
         {characteristics.map((characteristic, index) => (
-          <li key={index}>{characteristic}</li>
+          <li key={index}>
+            {characteristic}
+            <Button
+              kind="danger"
+              renderIcon={TrashCan}
+              onClick={() => handleRemoveCharacteristic(index)}
+            >
+              Eliminar
+            </Button>
+          </li>
         ))}
       </ul>
 
@@ -313,7 +377,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
           <div className="flex mt-10 align-center gap-15">
             <input
               {...register("logo", {
-                required: tool.logo ? false : "El logo es obligatorio",
+                required: !tool.logo && !logoFile ? "El logo es obligatorio" : false,
               })}
               type="file"
               onChange={handleLogoUpload}
@@ -353,9 +417,9 @@ export const EditTICForm = ({ tool, categories }: Props) => {
 
       <h6 className="f-size-18 mt-10">Imágenes</h6>
       {existingImages.length > 0 && (
-        <div className="grid-c-4 gap-30 mt-20" style={{ position: 'relative' }}>
+        <div className="grid-c-4 gap-30 mt-20">
           {existingImages.map((image, index) => (
-            <div key={index} className="existing-image-item">
+            <div key={index} className="existing-image-item" style={{ position: 'relative' }}>
               <Image width={1000} height={1000} src={image} alt={`Existing Image ${index}`} className="existing-image max-width" />
               <Button
                 className="p-10 no-border"
@@ -370,9 +434,9 @@ export const EditTICForm = ({ tool, categories }: Props) => {
       )}
 
       {previewImages.length > 0 && (
-        <div className="grid-c-4 gap-30 mt-20" style={{ position: 'relative' }}>
+        <div className="grid-c-4 gap-30 mt-20">
           {previewImages.map((src, index) => (
-            <div key={index} className="preview-item">
+            <div key={index} className="preview-item" style={{ position: 'relative' }}>
               <Image width={1000} height={1000} src={src} alt={`Preview ${index}`} className="preview-image max-width" />
               <Button
                 className="p-10 no-border"

@@ -132,6 +132,9 @@ export const createUpdateTool = async (formData: FormData) => {
 
             }
 
+            console.log(formData.get('logo'));
+            
+
             // Save logo and update tool
             if (formData.get('logo')) {
                 const logo = await uploadImages([formData.get('logo') as File]);
