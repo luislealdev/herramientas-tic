@@ -17,13 +17,14 @@ const EditTIC = async ({ params }: Props) => {
         getCategories()
     ]);
 
-    // Todo: new
     if (!tool && slug !== 'new') {
         redirect('/admin/tic/')
     }
 
-    const title = (slug === 'new') ? 'Agregar' : 'Editar'
+    const title = (slug === 'new') ? 'Agregar' : 'Editar';
 
+    console.log(tool);
+    
     return (
         <main className='p-100'>
             <h1>{title} herramienta TIC</h1>

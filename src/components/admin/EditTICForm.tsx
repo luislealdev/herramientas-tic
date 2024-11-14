@@ -1,15 +1,17 @@
 'use client';
 import { useForm } from "react-hook-form";
-import { TextArea } from '@carbon/react';
-import { Add } from '@carbon/react/icons';
-import { Category, Image, Tool } from "@prisma/client";
+import { TextArea, Button } from '@carbon/react';
+import { Add, TrashCan } from '@carbon/react/icons';
+import { Category, Tool } from "@prisma/client";
 import { useRouter } from 'next/navigation';
 import { createUpdateTool } from "@/actions";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSession } from "next-auth/react";
+import Image from 'next/image';
+import imageCompression from 'browser-image-compression';
 
 interface Props {
-  tool: Partial<Tool> & { Images?: Image[], categories?: Category[] };
+  tool: Partial<Tool> & { images?: string[], categories?: Category[] };
   categories: Category[];
 }
 
@@ -47,9 +49,55 @@ export const EditTICForm = ({ tool, categories }: Props) => {
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { data: session } = useSession();
+  const [previewImages, setPreviewImages] = useState<string[]>([]);
+  const [newImages, setNewImages] = useState<File[]>([]);
+  const [existingImages, setExistingImages] = useState<string[]>(tool.images || []);
+
+  useEffect(() => {
+    if (tool) {
+      setValue('name', tool.name || '');
+      setValue('description', tool.description || '');
+      setValue('advantages', tool.advantages?.join(',') || '');
+      setValue('disadvantages', tool.disadvantages?.join(',') || '');
+      setValue('useCases', tool.useCases?.join(',') || '');
+      setValue('categories', tool.categories?.map((category) => category.id).join(',') || '');
+    }
+  }, [tool, setValue]);
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      const files = Array.from(event.target.files);
+      const compressedImages = await Promise.all(
+        files.map(async (file) => {
+          try {
+            const options = {
+              maxSizeMB: 1,
+              maxWidthOrHeight: 800,
+              useWebWorker: true,
+            };
+            const compressedFile = await imageCompression(file, options);
+            return URL.createObjectURL(compressedFile);
+          } catch (error) {
+            console.error('Error al comprimir imagen:', error);
+            return URL.createObjectURL(file);
+          }
+        })
+      );
+      setPreviewImages([...previewImages, ...compressedImages]);
+      setNewImages([...newImages, ...files]);
+    }
+  };
+
+  const handleImageRemove = (index: number) => {
+    setPreviewImages(previewImages.filter((_, i) => i !== index));
+    setNewImages(newImages.filter((_, i) => i !== index));
+  };
+
+  const handleExistingImageRemove = (imageUrl: string) => {
+    setExistingImages(existingImages.filter(image => image !== imageUrl));
+  };
 
   const onSubmit = async (data: FormInputs) => {
-
     setIsSubmitting(true);
 
     register("categories", {
@@ -71,7 +119,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
 
     const formData = new FormData();
 
-    const { images, logo, ...toolToSave } = data;
+    const { logo, ...toolToSave } = data;
 
     formData.append("userId", userId)
 
@@ -87,12 +135,18 @@ export const EditTICForm = ({ tool, categories }: Props) => {
     formData.append("categories", selectedCategories.join(','));
 
     if (logo) {
-      formData.append("logo", logo); // Usa `logo` directamente sin acceder a `logo[0]`
+      formData.append("logo", logo);
     }
 
-    if (images) {
-      for (let i = 0; i < images.length; i++) {
-        formData.append('images', images[i]);
+    if (newImages) {
+      for (let i = 0; i < newImages.length; i++) {
+        const options = {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 800,
+          useWebWorker: true,
+        };
+        const compressedFile = await imageCompression(newImages[i], options);
+        formData.append('images', compressedFile);
       }
     }
 
@@ -163,7 +217,6 @@ export const EditTICForm = ({ tool, categories }: Props) => {
             {category.name}
           </label>
         ))}
-        {/* Mensaje de error personalizado para categorías */}
         {selectedCategories.length === 0 && <p className="error">Debes seleccionar al menos una categoría</p>}
       </div>
 
@@ -219,9 +272,9 @@ export const EditTICForm = ({ tool, categories }: Props) => {
           <div className="flex mt-10 align-center gap-15">
             <input
               {...register("logo", {
-                required: tool.Images ? false : "El logo es obligatorio",
+                required: tool.images ? false : "El logo es obligatorio",
               })}
-              type="file" // Asegúrate de que `multiple` no esté presente
+              type="file"
             />
           </div>
           {errors.logo && <p className="error">{errors.logo.message}</p>}
@@ -232,15 +285,49 @@ export const EditTICForm = ({ tool, categories }: Props) => {
           <div className="flex mt-10 align-center gap-15">
             <input
               {...register("images", {
-                required: tool.Images && tool.Images.length > 0 ? false : "Las imágenes son obligatorias"
+                required: tool.images && tool.images.length > 0 ? false : "Las imágenes son obligatorias"
               })}
               multiple
               type="file"
+              onChange={handleImageUpload}
             />
           </div>
           {errors.images && <p className="error">{errors.images.message}</p>}
         </div>
       </div>
+
+      {existingImages.length > 0 && (
+        <div className="grid-c-4 mt-20 gap-30">
+          {existingImages.map((image, index) => (
+            <div key={index} style={{ position: 'relative' }}>
+              <Image width={1000} height={1000} src={image} alt={`Existing Image ${index}`} className="existing-image max-width" />
+              <Button
+                className="no-border p-10"
+                style={{ position: "absolute", top: 0, right: 0 }}
+                renderIcon={TrashCan}
+                onClick={() => handleExistingImageRemove(image)}
+              >
+              </Button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {previewImages.length > 0 && (
+        <div className="grid-c-4 mt-20">
+          {previewImages.map((src, index) => (
+            <div key={index} className="preview-item">
+              <Image width={400} height={400} src={src} alt={`Preview ${index}`} className="preview-image auto-height" />
+              <Button
+                renderIcon={TrashCan}
+                onClick={() => handleImageRemove(index)}
+              >
+                Eliminar
+              </Button>
+            </div>
+          ))}
+        </div>
+      )}
 
       <button className="mt-50" disabled={isSubmitting}>
         {isSubmitting ? "Guardando..." : "Guardar herramienta"}
