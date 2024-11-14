@@ -55,6 +55,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
   const [previewImages, setPreviewImages] = useState<string[]>([]);
   const [newImages, setNewImages] = useState<File[]>([]);
   const [existingImages, setExistingImages] = useState<string[]>(tool.images || []);
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
 
   useEffect(() => {
     if (tool) {
@@ -93,6 +94,14 @@ export const EditTICForm = ({ tool, categories }: Props) => {
       );
       setPreviewImages([...previewImages, ...compressedImages.filter(Boolean)]);
       setNewImages([...newImages, ...files]);
+    }
+  };
+
+  const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      setLogoPreview(URL.createObjectURL(file));
+      setValue('logo', file);
     }
   };
 
@@ -304,9 +313,10 @@ export const EditTICForm = ({ tool, categories }: Props) => {
           <div className="flex mt-10 align-center gap-15">
             <input
               {...register("logo", {
-                required: tool.images ? false : "El logo es obligatorio",
+                required: tool.logo ? false : "El logo es obligatorio",
               })}
               type="file"
+              onChange={handleLogoUpload}
             />
           </div>
           {errors.logo && <p className="error">{errors.logo.message}</p>}
@@ -328,17 +338,31 @@ export const EditTICForm = ({ tool, categories }: Props) => {
         </div>
       </div>
 
+      <h6 className="f-size-18 mt-10">Logo</h6>
+      {logoPreview ? (
+        <div className="logo-container">
+          <Image width={200} height={200} src={logoPreview} alt="Logo Preview" className="logo auto-width" />
+        </div>
+      ) : (
+        tool.logo && (
+          <div className="logo-container">
+            <Image width={200} height={200} src={tool.logo} alt="Logo" className="logo auto-width" />
+          </div>
+        )
+      )}
+
+      <h6 className="f-size-18 mt-10">Imágenes</h6>
       {existingImages.length > 0 && (
-        <div className="existing-images-container mt-20">
+        <div className="grid-c-4 gap-30 mt-20" style={{ position: 'relative' }}>
           {existingImages.map((image, index) => (
             <div key={index} className="existing-image-item">
               <Image width={1000} height={1000} src={image} alt={`Existing Image ${index}`} className="existing-image max-width" />
               <Button
-                kind="danger"
+                className="p-10 no-border"
+                style={{ position: 'absolute', top: 0, right: 0 }}
                 renderIcon={TrashCan}
                 onClick={() => handleExistingImageRemove(image)}
               >
-                Eliminar
               </Button>
             </div>
           ))}
@@ -346,23 +370,23 @@ export const EditTICForm = ({ tool, categories }: Props) => {
       )}
 
       {previewImages.length > 0 && (
-        <div className="preview-container mt-20">
+        <div className="grid-c-4 gap-30 mt-20" style={{ position: 'relative' }}>
           {previewImages.map((src, index) => (
             <div key={index} className="preview-item">
               <Image width={1000} height={1000} src={src} alt={`Preview ${index}`} className="preview-image max-width" />
               <Button
-                kind="danger"
+                className="p-10 no-border"
+                style={{ position: 'absolute', top: 0, right: 0 }}
                 renderIcon={TrashCan}
                 onClick={() => handleImageRemove(index)}
               >
-                Eliminar
               </Button>
             </div>
           ))}
         </div>
       )}
 
-      <button className="mt-50" disabled={isSubmitting}>
+      <button className="mt-50 p-10 f-size-18" disabled={isSubmitting} >
         {isSubmitting ? "Guardando..." : "Guardar herramienta"}
       </button>
     </form>
