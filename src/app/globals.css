@@ -214,3 +214,16 @@ input[type="checkbox"]:checked {
   padding-top: 50px;
   padding-bottom: 50px;
 }
+
+@media (max-width: 770px) {
+  .column-in-mobile {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .grid-c-2-in-mobile {
+    padding: 0 2rem;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}

@@ -73,7 +73,7 @@ const HomePage: React.FC<Props> = ({ searchParams }) => {
 
   return (
     <main>
-      <div className='flex align-center space-between ph-40 modal-title'>
+      <div className='flex align-center space-between ph-40 column-in-mobile '>
         <h1 className='f-size-70 button'>Ticnify</h1>
         <input
           type="text"
@@ -85,9 +85,9 @@ const HomePage: React.FC<Props> = ({ searchParams }) => {
           onKeyPress={handleSearchKeyPress}
         />
       </div>
-      <div className=''>
+      <div>
         <p className='center-text'>Selecciona las categorías de las herramientas </p>
-        <div className='flex align-center justify-content gap-30 mt-10'>
+        <div className='flex align-center justify-content gap-30 mt-10 grid-c-2-in-mobile'>
           {['Planificación', 'Ejecución', 'Monitoreo', 'Cierre'].map(cat => (
             <button
               key={cat}
@@ -95,7 +95,7 @@ const HomePage: React.FC<Props> = ({ searchParams }) => {
               onClick={() => handleCategoryClick(cat)}
             >
               {cat}
-            </button> 
+            </button>
           ))}
         </div>
       </div>
