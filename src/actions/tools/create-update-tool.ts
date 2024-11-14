@@ -128,6 +128,19 @@ export const createUpdateTool = async (formData: FormData) => {
 
             }
 
+            // Save logo and update tool
+            if (formData.get('logo')) {
+                const logo = await uploadImages([formData.get('logo') as File]);
+                if (!logo) {
+                    throw new Error('No se pudo cargar el logo, rollingback');
+                }
+
+                await prisma.tool.update({
+                    where: { id: tool.id },
+                    data: { logo: logo[0] }
+                });
+            }
+
 
             return { tool };
         });

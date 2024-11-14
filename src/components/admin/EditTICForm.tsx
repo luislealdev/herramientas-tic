@@ -102,7 +102,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
   };
 
   const onSubmit = async (data: FormInputs) => {
-    setIsSubmitting(true);
+    // setIsSubmitting(true);
 
     register("categories", {
       validate: () => selectedCategories.length > 0 || "Debes seleccionar al menos una categoría"
@@ -140,7 +140,13 @@ export const EditTICForm = ({ tool, categories }: Props) => {
     formData.append("categories", selectedCategories.join(','));
 
     if (logo) {
-      formData.append("logo", logo);
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 800,
+        useWebWorker: true,
+      }
+      const compressedLogo = await imageCompression(logo, options);
+      formData.append("logo", compressedLogo);
     }
 
     if (newImages) {
