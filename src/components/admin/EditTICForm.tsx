@@ -294,14 +294,13 @@ export const EditTICForm = ({ tool, categories }: Props) => {
           </div>
           <ul>
             {advantages.map((adv, index) => (
-              <li key={index}>
+              <li key={index} className="flex align-center">
                 {adv}
                 <Button
-                  kind="danger"
+                  className="p-5 no-border"
                   renderIcon={TrashCan}
                   onClick={() => handleRemoveAdvantage(index)}
                 >
-                  Eliminar
                 </Button>
               </li>
             ))}
@@ -316,14 +315,13 @@ export const EditTICForm = ({ tool, categories }: Props) => {
           </div>
           <ul>
             {disadvantages.map((disadv, index) => (
-              <li key={index}>
+              <li key={index} className="flex align-center">
                 {disadv}
                 <Button
-                  kind="danger"
+                  className="p-5 no-border"
                   renderIcon={TrashCan}
                   onClick={() => handleRemoveDisadvantage(index)}
                 >
-                  Eliminar
                 </Button>
               </li>
             ))}
@@ -338,14 +336,13 @@ export const EditTICForm = ({ tool, categories }: Props) => {
       </div>
       <ul>
         {useCases.map((useCase, index) => (
-          <li key={index}>
+          <li key={index} className="flex align-center">
             {useCase}
             <Button
-              kind="danger"
+              className="p-5 no-border"
               renderIcon={TrashCan}
               onClick={() => handleRemoveUseCase(index)}
             >
-              Eliminar
             </Button>
           </li>
         ))}
@@ -358,14 +355,13 @@ export const EditTICForm = ({ tool, categories }: Props) => {
       </div>
       <ul>
         {characteristics.map((characteristic, index) => (
-          <li key={index}>
+          <li key={index} className="flex align-center">
             {characteristic}
             <Button
-              kind="danger"
+              className="p-5 no-border"
               renderIcon={TrashCan}
               onClick={() => handleRemoveCharacteristic(index)}
             >
-              Eliminar
             </Button>
           </li>
         ))}
@@ -417,9 +413,9 @@ export const EditTICForm = ({ tool, categories }: Props) => {
 
       <h6 className="f-size-18 mt-10">Imágenes</h6>
       {existingImages.length > 0 && (
-        <div className="grid-c-4 gap-30 mt-20">
+        <div className="grid-c-4 gap-30 mt-20" style={{ position: 'relative' }}>
           {existingImages.map((image, index) => (
-            <div key={index} className="existing-image-item" style={{ position: 'relative' }}>
+            <div key={index} className="existing-image-item">
               <Image width={1000} height={1000} src={image} alt={`Existing Image ${index}`} className="existing-image max-width" />
               <Button
                 className="p-10 no-border"
@@ -434,9 +430,9 @@ export const EditTICForm = ({ tool, categories }: Props) => {
       )}
 
       {previewImages.length > 0 && (
-        <div className="grid-c-4 gap-30 mt-20">
+        <div className="grid-c-4 gap-30 mt-20" style={{ position: 'relative' }}>
           {previewImages.map((src, index) => (
-            <div key={index} className="preview-item" style={{ position: 'relative' }}>
+            <div key={index} className="preview-item">
               <Image width={1000} height={1000} src={src} alt={`Preview ${index}`} className="preview-image max-width" />
               <Button
                 className="p-10 no-border"
