@@ -18,3 +18,5 @@ npm run dev
  Para ver el resultado, abrimos el navegador de confianza y escribimos [http://localhost:3000](http://localhost:3000)
 
 Para poder modificar  o editar la página, anexamos en la URL lo siguiente: `app/page.tsx`. La página se actualiza a medida que editas el archivo.
+
+Para la conexión a la base de datos se tiene que renoombrar el archivo ".env.template" a ".env"
