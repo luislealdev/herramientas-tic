@@ -413,9 +413,9 @@ export const EditTICForm = ({ tool, categories }: Props) => {
 
       <h6 className="f-size-18 mt-10">Imágenes</h6>
       {existingImages.length > 0 && (
-        <div className="grid-c-4 gap-30 mt-20" style={{ position: 'relative' }}>
+        <div className="grid-c-4 gap-30 mt-20">
           {existingImages.map((image, index) => (
-            <div key={index} className="existing-image-item">
+            <div key={index} className="existing-image-item" style={{ position: 'relative' }}>
               <Image width={1000} height={1000} src={image} alt={`Existing Image ${index}`} className="existing-image max-width" />
               <Button
                 className="p-10 no-border"
@@ -430,9 +430,9 @@ export const EditTICForm = ({ tool, categories }: Props) => {
       )}
 
       {previewImages.length > 0 && (
-        <div className="grid-c-4 gap-30 mt-20" style={{ position: 'relative' }}>
+        <div className="grid-c-4 gap-30 mt-20" >
           {previewImages.map((src, index) => (
-            <div key={index} className="preview-item">
+            <div key={index} className="preview-item" style={{ position: 'relative' }}>
               <Image width={1000} height={1000} src={src} alt={`Preview ${index}`} className="preview-image max-width" />
               <Button
                 className="p-10 no-border"
