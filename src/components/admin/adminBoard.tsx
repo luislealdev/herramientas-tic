@@ -1,26 +1,25 @@
-"use client";
-import React, { useState } from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 import styles from './AdminBoard.module.css';
-import { FiEdit2, FiFilter, FiSearch } from 'react-icons/fi';
+import { FiEdit, FiEdit2, FiFilter, FiSearch } from 'react-icons/fi';
 import Link from 'next/link';
+import { getPaginatedTools } from '@/actions/tools/get-paginated-tools';
+import { Tool } from '@prisma/client';
+import Image from 'next/image';
 // import { FiSearch, FiEdit2, FiFilter } from 'react-icons/fi'; // Para los iconos
 
 const AdminBoard = () => {
-  const [expandedRows, setExpandedRows] = useState<number[]>([]);
+  const [tools, setTools] = useState<Tool[]>([]);
 
-  const toggleRow = (index: number) => {
-    if (expandedRows.includes(index)) {
-      setExpandedRows(expandedRows.filter((i) => i !== index));
-    } else {
-      setExpandedRows([...expandedRows, index]);
-    }
-  };
+  useEffect(() => {
+    const fetchTools = async () => {
+      const { tools } = await getPaginatedTools({ page: 1 });
+      setTools(tools);
+    };
 
-  const rows = [
-    { name: 'Herramienta 1', date: '2024-10-10', description: 'Descripción 1', logo: 'Logo 1' },
-    { name: 'Herramienta 2', date: '2024-09-15', description: 'Descripción 2', logo: 'Logo 2' },
-    // Agrega más filas según sea necesario
-  ];
+    fetchTools();
+  }, []);
+
 
   return (
     <div className={styles.adminBoard}>
@@ -33,6 +32,7 @@ const AdminBoard = () => {
           <FiSearch className={styles.icon} />
           <input type="text" placeholder="Buscar..." />
         </div>
+        <FiEdit className={styles.icon}/>
         <FiEdit2 className={styles.icon} />
         <FiFilter className={styles.icon} />
         <Link href='/admin/tic/new' className={styles.addButton}>Agregar</Link>
@@ -43,28 +43,27 @@ const AdminBoard = () => {
           <tr>
             <th><input type="checkbox" /></th>
             <th>Nombre</th>
-            <th>Fecha de agregación</th>
             <th>Descripción</th>
             <th>Logo</th>
           </tr>
         </thead>
         <tbody>
-          {rows.map((row, index) => (
+          {tools.map((tool, index) => (
             <React.Fragment key={index}>
-              <tr onClick={() => toggleRow(index)} className={styles.row}>
+              <tr className={styles.row}>
+              {/* <tr onClick={() => toggleRow(index)} className={styles.row}> */}
                 <td><input type="checkbox" /></td>
-                <td>{row.name}</td>
-                <td>{row.date}</td>
-                <td>{row.description}</td>
-                <td>{row.logo}</td>
+                <td>{tool.name}</td>
+                <td>{tool.description}</td>
+                <td><Image src={tool.logo} width={50} height={50} alt={tool.name}/></td>
               </tr>
-              {expandedRows.includes(index) && (
+              {/* {expandedRows.includes(index) && (
                 <tr className={styles.expandedRow}>
                   <td colSpan={5}>
                     <div>Expandable table content</div>
                   </td>
                 </tr>
-              )}
+              )} */}
             </React.Fragment>
           ))}
         </tbody>
