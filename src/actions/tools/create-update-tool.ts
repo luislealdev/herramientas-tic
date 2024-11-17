@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { v2 as cloudinary } from 'cloudinary';
 import { Tool } from '@prisma/client';
+import { logToolAction } from './log-tool';
 
 // Configuración de Cloudinary para subir imágenes al folder 'herramientas-tic'
 cloudinary.config({
@@ -91,6 +92,8 @@ export const createUpdateTool = async (formData: FormData) => {
                         },
                     },
                 });
+
+                await logToolAction("update", JSON.stringify(toolData), userId);
             } else {
                 // Crear nueva herramienta
                 tool = await prisma.tool.create({
@@ -115,6 +118,8 @@ export const createUpdateTool = async (formData: FormData) => {
                         },
                     },
                 });
+
+                await logToolAction("create", JSON.stringify(toolData), userId);
             }
 
             if (formData.getAll('images')) {
