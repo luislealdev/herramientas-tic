@@ -108,4 +108,8 @@
   .pageButton:hover {
     background-color: #f0f0f0;
   }
+  .list {
+    list-style-type: disc;
+    margin-left: 20px; 
+  }
   

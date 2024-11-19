@@ -10,6 +10,15 @@ import Image from 'next/image';
 
 const AdminBoard = () => {
   const [tools, setTools] = useState<Tool[]>([]);
+  const [expandedTools, setExpandedTools] = useState<number[]>([]);
+
+  const toggleRow = (index: number) => {
+    if (expandedTools.includes(index)) {
+      setExpandedTools(expandedTools.filter((i) => i !== index));
+    } else {
+      setExpandedTools([...expandedTools, index]);
+    }
+  };
 
   useEffect(() => {
     const fetchTools = async () => {
@@ -41,7 +50,7 @@ const AdminBoard = () => {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th><input type="checkbox" /></th>
+            <th></th>
             <th>Nombre</th>
             <th>Descripción</th>
             <th>Logo</th>
@@ -50,20 +59,62 @@ const AdminBoard = () => {
         <tbody>
           {tools.map((tool, index) => (
             <React.Fragment key={index}>
-              <tr className={styles.row}>
+              <tr onClick={() => toggleRow(index)} className={styles.tool}>
               {/* <tr onClick={() => toggleRow(index)} className={styles.row}> */}
                 <td><input type="checkbox" /></td>
                 <td>{tool.name}</td>
                 <td>{tool.description}</td>
-                <td><Image src={tool.logo} width={50} height={50} alt={tool.name}/></td>
+                <td><Image src={tool.logo} width={150} height={100} alt={tool.name}/></td>
               </tr>
-              {/* {expandedRows.includes(index) && (
-                <tr className={styles.expandedRow}>
-                  <td colSpan={5}>
-                    <div>Expandable table content</div>
-                  </td>
-                </tr>
-              )} */}
+
+                  {expandedTools.includes(index) && (
+                    <tr className={styles.setExpandedTools}>
+                      <td colSpan={4}>
+                        <td>
+                        <strong className={styles.header}> Ventajas </strong>
+                        
+                        {tool.advantages && (
+                          <ul className={styles.list}>
+                            {tool.advantages.map((advantage, index) => (
+                              <li key={index}>{advantage}</li>
+                            ))}
+                          </ul>
+                        )}
+                        </td>
+                        <td>
+                        <strong className={styles.header}> Desventajas </strong>
+                        {tool.disadvantages && (
+                          <ul className={styles.list}>
+                            {tool.disadvantages.map((disadvantage, index) => (
+                              <li key={index}>{disadvantage}</li>
+                            ))}
+                          </ul>
+                        )}
+                        </td>
+                        <td>
+                        <strong className={styles.header}> Características </strong>
+                        {tool.characteristics && (
+                          <ul className={styles.list}>
+                            {tool.characteristics.map((characteristics, index) => (
+                              <li key={index}>{characteristics}</li>
+                            ))}
+                          </ul>
+                        )}
+                        </td>
+                        <td>
+                        <strong className={styles.header}> Casos de uso </strong>
+                        {tool.useCases && (
+                          <ul className={styles.list}>
+                            {tool.useCases.map((useCases, index) => (
+                              <li key={index}>{useCases}</li>
+                            ))}
+                          </ul>
+                        )}
+                        </td>
+                      </td>
+                    </tr>  
+                  )}
+
             </React.Fragment>
           ))}
         </tbody>
