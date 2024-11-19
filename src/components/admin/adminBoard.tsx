@@ -109,8 +109,9 @@ const AdminBoard = () => {
                           )}
                         </td>
                         <div> </div>
-                        <div className= "flex justify-content"> 
-                          <Link href={`/admin/tic/${tool.name}`} className={styles.addButton}> Editar herramienta </Link>
+                        <div className= "flex justify-content" style={{ gap: '16px' }}> 
+                          <Link href={`/admin/tic/${tool.name}`} className={styles.addButton}> Editar </Link>
+                          <button className={styles.addButton}> Eliminar </button>
                         </div> 
                       </td>
                     </tr> 
