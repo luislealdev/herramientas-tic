@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import styles from './AdminBoard.module.css';
-import { FiEdit, FiEdit2, FiFilter, FiSearch } from 'react-icons/fi';
+import { FiFilter, FiSearch } from 'react-icons/fi';
 import Link from 'next/link';
 import { getPaginatedTools } from '@/actions/tools/get-paginated-tools';
 import { Tool } from '@prisma/client';
@@ -41,8 +41,6 @@ const AdminBoard = () => {
           <FiSearch className={styles.icon} />
           <input type="text" placeholder="Buscar..." />
         </div>
-        <FiEdit className={styles.icon}/>
-        <FiEdit2 className={styles.icon} />
         <FiFilter className={styles.icon} />
         <Link href='/admin/tic/new' className={styles.addButton}>Agregar</Link>
       </div>
@@ -61,7 +59,7 @@ const AdminBoard = () => {
             <React.Fragment key={index}>
               <tr onClick={() => toggleRow(index)} className={styles.tool}>
               {/* <tr onClick={() => toggleRow(index)} className={styles.row}> */}
-                <td><input type="checkbox" /></td>
+                <td></td>
                 <td>{tool.name}</td>
                 <td>{tool.description}</td>
                 <td><Image src={tool.logo} width={150} height={100} alt={tool.name}/></td>
@@ -71,50 +69,54 @@ const AdminBoard = () => {
                     <tr className={styles.setExpandedTools}>
                       <td colSpan={4}>
                         <td>
-                        <strong className={styles.header}> Ventajas </strong>
-                        
-                        {tool.advantages && (
-                          <ul className={styles.list}>
-                            {tool.advantages.map((advantage, index) => (
-                              <li key={index}>{advantage}</li>
-                            ))}
-                          </ul>
-                        )}
+                          <strong className={styles.header}> Ventajas </strong>                    
+                          {tool.advantages && (
+                            <ul className={styles.list}>
+                              {tool.advantages.map((advantage, index) => (
+                                <li key={index}>{advantage}</li>
+                              ))}
+                            </ul>
+                          )}
                         </td>
                         <td>
-                        <strong className={styles.header}> Desventajas </strong>
-                        {tool.disadvantages && (
-                          <ul className={styles.list}>
-                            {tool.disadvantages.map((disadvantage, index) => (
-                              <li key={index}>{disadvantage}</li>
-                            ))}
-                          </ul>
-                        )}
+                          <strong className={styles.header}> Desventajas </strong>
+                          {tool.disadvantages && (
+                            <ul className={styles.list}>
+                              {tool.disadvantages.map((disadvantage, index) => (
+                                <li key={index}>{disadvantage}</li>
+                              ))}
+                            </ul>
+                          )}
                         </td>
                         <td>
-                        <strong className={styles.header}> Características </strong>
-                        {tool.characteristics && (
-                          <ul className={styles.list}>
-                            {tool.characteristics.map((characteristics, index) => (
-                              <li key={index}>{characteristics}</li>
-                            ))}
-                          </ul>
-                        )}
+                          <strong className={styles.header}> Características </strong>
+                          {tool.characteristics && (
+                            <ul className={styles.list}>
+                              {tool.characteristics.map((characteristics, index) => (
+                                <li key={index}>{characteristics}</li>
+                              ))}
+                            </ul>
+                          )}
                         </td>
                         <td>
                         <strong className={styles.header}> Casos de uso </strong>
-                        {tool.useCases && (
-                          <ul className={styles.list}>
-                            {tool.useCases.map((useCases, index) => (
-                              <li key={index}>{useCases}</li>
-                            ))}
-                          </ul>
-                        )}
+                          {tool.useCases && (
+                            <ul className={styles.list}>
+                              {tool.useCases.map((useCases, index) => (
+                                <li key={index}>{useCases}</li>
+                              ))}
+                            </ul>
+                          )}
                         </td>
+                        <div> </div>
+                        <div className= "flex justify-content"> 
+                          <Link href={`/admin/tic/${tool.name}`} className={styles.addButton}> Editar herramienta </Link>
+                        </div> 
                       </td>
-                    </tr>  
+                    </tr> 
+                      
                   )}
-
+              
             </React.Fragment>
           ))}
         </tbody>
