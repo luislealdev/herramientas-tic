@@ -45,7 +45,7 @@ const ToolPage = async ({ params }: Props) => {
     return (
         <main>
             <section className='grid-c-2 p-100'>
-                <Image className='max-width p-40' alt={tool.name} src={tool.logo ? tool.logo : tool.images[0]} width={1000} height={1000} />
+                <Image className='max-width p-40' alt={tool.name} src={tool.logo ? tool.logo : tool.images[0].url} width={1000} height={1000} />
                 <div>
                     <h1>{tool.name}</h1>
                     <p className='f-size-16 justify-text'>{tool.description}</p>
@@ -85,7 +85,7 @@ const ToolPage = async ({ params }: Props) => {
                 <h2>Imágenes</h2>
                 <div className='grid-c-3 gap-30'>
                     {
-                        tool.images.map((image, index) => <Image key={index} alt={tool.name} src={image} width={500} height={500} className='max-width' />)
+                        tool.images.map((image, index) => <Image key={index} alt={tool.name} src={image.url} width={500} height={500} className='max-width' />)
                     }
                 </div>
             </section>

@@ -20,7 +20,6 @@ export const getToolBySlug = async (slug: string) => {
 
         return {
             ...tool,
-            images: tool.images.map(image => image.url)
         };
 
 
