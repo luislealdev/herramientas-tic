@@ -1,12 +1,13 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import styles from './AdminBoard.module.css';
-import { FiFilter, FiSearch } from 'react-icons/fi';
+import { FiArchive, FiCheckSquare, FiFilter, FiSearch } from 'react-icons/fi';
 import Link from 'next/link';
 import { getPaginatedTools } from '@/actions/tools/get-paginated-tools';
 import { Tool } from '@prisma/client';
 import Image from 'next/image';
-// import { FiSearch, FiEdit2, FiFilter } from 'react-icons/fi'; // Para los iconos
+import { auth } from '@/auth.config';
+
 
 const AdminBoard = () => {
   const [tools, setTools] = useState<Tool[]>([]);
@@ -42,6 +43,7 @@ const AdminBoard = () => {
           <input type="text" placeholder="Buscar..." />
         </div>
         <FiFilter className={styles.icon} />
+        <FiArchive className={styles.icon} />        
         <Link href='/admin/tic/new' className={styles.addButton}>Agregar</Link>
       </div>
 
@@ -111,7 +113,7 @@ const AdminBoard = () => {
                         <div> </div>
                         <div className= "flex justify-content" style={{ gap: '16px' }}> 
                           <Link href={`/admin/tic/${tool.name}`} className={styles.addButton}> Editar </Link>
-                          <button className={styles.addButton}> Eliminar </button>
+                          <button className={styles.deleteButton}> Eliminar </button>
                         </div> 
                       </td>
                     </tr> 
