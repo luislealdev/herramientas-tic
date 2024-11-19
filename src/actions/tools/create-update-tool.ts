@@ -18,11 +18,11 @@ const toolSchema = z.object({
     id: z.string().uuid().optional().nullable(),
     name: z.string().min(3).max(255),
     description: z.string().min(3),
-    categories: z.string(),
-    advantages: z.string(),
-    characteristics: z.string(),
-    disadvantages: z.string(),
-    useCases: z.string(),
+    categories: z.array(z.string().uuid()),
+    advantages: z.array(z.string()),
+    characteristics: z.array(z.string()),
+    disadvantages: z.array(z.string()),
+    useCases: z.array(z.string()),
     userId: z.string().uuid(),
 });
 
@@ -31,6 +31,12 @@ export const createUpdateTool = async (formData: FormData) => {
 
 
     const data = Object.fromEntries(formData);
+    data.advantages = JSON.parse(data.advantages as string);
+    data.characteristics = JSON.parse(data.characteristics as string);
+    data.disadvantages = JSON.parse(data.disadvantages as string);
+    data.useCases = JSON.parse(data.useCases as string);
+    data.categories = JSON.parse(data.categories as string);
+
     const parsedData = toolSchema.safeParse(data);
 
     if (!parsedData.success) {
@@ -41,9 +47,7 @@ export const createUpdateTool = async (formData: FormData) => {
         };
     }
 
-
     const { userId, ...toolData } = parsedData.data;
-
 
     if (!toolData.categories || toolData.categories.length === 0) {
         return {
@@ -61,12 +65,6 @@ export const createUpdateTool = async (formData: FormData) => {
     try {
         const prismaTx = await prisma.$transaction(async () => {
             let tool: Tool;
-            const categories = rest.categories.split(',').map((id: string) => id);
-            const advantages = rest.advantages.split(',');
-            const disadvantages = rest.disadvantages.split(',');
-            const useCases = rest.useCases.split(',');
-            const characteristics = rest.characteristics.split(',');
-
 
             if (id) {
 
@@ -74,21 +72,8 @@ export const createUpdateTool = async (formData: FormData) => {
                     where: { id },
                     data: {
                         ...rest,
-                        // logo: logo[0] ?? '', // Actualiza el logo si se sube uno nuevo
                         categories: {
-                            connect: categories.map((id: string) => ({ id })),
-                        },
-                        advantages: {
-                            set: advantages,
-                        },
-                        disadvantages: {
-                            set: disadvantages,
-                        },
-                        characteristics: {
-                            set: characteristics,
-                        },
-                        useCases: {
-                            set: useCases,
+                            connect: rest.categories.map((id: string) => ({ id })),
                         },
                     },
                 });
@@ -100,21 +85,8 @@ export const createUpdateTool = async (formData: FormData) => {
                     data: {
                         createdBy: userId,
                         ...rest,
-                        // logo: logo[0] ?? '',
                         categories: {
-                            connect: categories.map((id: string) => ({ id })),
-                        },
-                        advantages: {
-                            set: advantages,
-                        },
-                        disadvantages: {
-                            set: disadvantages,
-                        },
-                        characteristics: {
-                            set: characteristics,
-                        },
-                        useCases: {
-                            set: useCases,
+                            connect: rest.categories.map((id: string) => ({ id })),
                         },
                     },
                 });
@@ -138,7 +110,7 @@ export const createUpdateTool = async (formData: FormData) => {
             }
 
             console.log(formData.get('logo'));
-            
+
 
             // Save logo and update tool
             if (formData.get('logo')) {

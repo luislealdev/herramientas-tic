@@ -19,11 +19,11 @@ interface Props {
 interface FormInputs {
   name: string;
   description: string;
-  advantages: string;
-  disadvantages: string;
-  useCases: string;
-  characteristics: string;
-  categories: string;
+  advantages: string[];
+  disadvantages: string[];
+  useCases: string[];
+  characteristics: string[];
+  categories: string[];
   images?: FileList;
   logo?: File;
 }
@@ -34,11 +34,11 @@ export const EditTICForm = ({ tool, categories }: Props) => {
     defaultValues: {
       name: tool.name,
       description: tool.description,
-      advantages: tool.advantages ? tool.advantages.join(',') : '',
-      disadvantages: tool.disadvantages ? tool.disadvantages.join(',') : '',
-      useCases: tool.useCases ? tool.useCases.join(',') : '',
-      characteristics: tool.characteristics ? tool.characteristics.join(',') : '',
-      categories: tool.categories ? tool.categories.map((category) => category.id).join(',') : '',
+      advantages: tool.advantages || [],
+      disadvantages: tool.disadvantages || [],
+      useCases: tool.useCases || [],
+      characteristics: tool.characteristics || [],
+      categories: tool.categories ? tool.categories.map((category) => category.id) : [],
       images: undefined,
       logo: undefined,
     },
@@ -63,11 +63,11 @@ export const EditTICForm = ({ tool, categories }: Props) => {
     if (tool) {
       setValue('name', tool.name || '');
       setValue('description', tool.description || '');
-      setValue('advantages', tool.advantages?.join(',') || '');
-      setValue('disadvantages', tool.disadvantages?.join(',') || '');
-      setValue('useCases', tool.useCases?.join(',') || '');
-      setValue('characteristics', tool.characteristics?.join(',') || '');
-      setValue('categories', tool.categories?.map((category) => category.id).join(',') || '');
+      setValue('advantages', tool.advantages || []);
+      setValue('disadvantages', tool.disadvantages || []);
+      setValue('useCases', tool.useCases || []);
+      setValue('characteristics', tool.characteristics || []);
+      setValue('categories', tool.categories?.map((category) => category.id) || []);
     }
   }, [tool, setValue]);
 
@@ -147,7 +147,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
 
     const formData = new FormData();
 
-    const toolToSave = { ...data };
+    const toolToSave = { ...data, existingImages: existingImages.map(image => image.url) };
 
     formData.append("userId", userId)
 
@@ -157,11 +157,11 @@ export const EditTICForm = ({ tool, categories }: Props) => {
 
     formData.append("name", toolToSave.name);
     formData.append("description", toolToSave.description);
-    formData.append("advantages", toolToSave.advantages);
-    formData.append("disadvantages", toolToSave.disadvantages);
-    formData.append("useCases", toolToSave.useCases);
-    formData.append("characteristics", toolToSave.characteristics);
-    formData.append("categories", selectedCategories.join(','));
+    formData.append("advantages", JSON.stringify(toolToSave.advantages));
+    formData.append("disadvantages", JSON.stringify(toolToSave.disadvantages));
+    formData.append("useCases", JSON.stringify(toolToSave.useCases));
+    formData.append("characteristics", JSON.stringify(toolToSave.characteristics));
+    formData.append("categories", JSON.stringify(selectedCategories));
 
     if (logoFile) {
       formData.append("logo", logoFile);
@@ -189,6 +189,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
 
     if (!ok) {
       alert('Herramienta no se pudo actualizar');
+      setIsSubmitting(false);
       return;
     }
 
@@ -200,56 +201,56 @@ export const EditTICForm = ({ tool, categories }: Props) => {
     const advantage = (document.getElementById("advantageInput") as HTMLInputElement).value;
     if (advantage) {
       setAdvantages([...advantages, advantage]);
-      setValue("advantages", [...advantages, advantage].join(','));
+      setValue("advantages", [...advantages, advantage]);
     }
   };
 
   const handleRemoveAdvantage = (index: number) => {
     const updatedAdvantages = advantages.filter((_, i) => i !== index);
     setAdvantages(updatedAdvantages);
-    setValue("advantages", updatedAdvantages.join(','));
+    setValue("advantages", updatedAdvantages);
   };
 
   const handleAddDisadvantage = () => {
     const disadvantage = (document.getElementById("disadvantageInput") as HTMLInputElement).value;
     if (disadvantage) {
       setDisadvantages([...disadvantages, disadvantage]);
-      setValue("disadvantages", [...disadvantages, disadvantage].join(','));
+      setValue("disadvantages", [...disadvantages, disadvantage]);
     }
   };
 
   const handleRemoveDisadvantage = (index: number) => {
     const updatedDisadvantages = disadvantages.filter((_, i) => i !== index);
     setDisadvantages(updatedDisadvantages);
-    setValue("disadvantages", updatedDisadvantages.join(','));
+    setValue("disadvantages", updatedDisadvantages);
   };
 
   const handleAddUseCase = () => {
     const useCase = (document.getElementById("useCaseInput") as HTMLInputElement).value;
     if (useCase) {
       setUseCases([...useCases, useCase]);
-      setValue("useCases", [...useCases, useCase].join(','));
+      setValue("useCases", [...useCases, useCase]);
     }
   };
 
   const handleRemoveUseCase = (index: number) => {
     const updatedUseCases = useCases.filter((_, i) => i !== index);
     setUseCases(updatedUseCases);
-    setValue("useCases", updatedUseCases.join(','));
+    setValue("useCases", updatedUseCases);
   };
 
   const handleAddCharacteristic = () => {
     const characteristic = (document.getElementById("characteristicInput") as HTMLInputElement).value;
     if (characteristic) {
       setCharacteristics([...characteristics, characteristic]);
-      setValue("characteristics", [...characteristics, characteristic].join(','));
+      setValue("characteristics", [...characteristics, characteristic]);
     }
   };
 
   const handleRemoveCharacteristic = (index: number) => {
     const updatedCharacteristics = characteristics.filter((_, i) => i !== index);
     setCharacteristics(updatedCharacteristics);
-    setValue("characteristics", updatedCharacteristics.join(','));
+    setValue("characteristics", updatedCharacteristics);
   };
 
   const handleCategoryChange = (categoryId: string) => {
