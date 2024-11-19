@@ -2,16 +2,17 @@
 import { useForm } from "react-hook-form";
 import { TextArea, Button } from '@carbon/react';
 import { Add, TrashCan } from '@carbon/react/icons';
-import { Category, Tool } from "@prisma/client";
+import { Category, Image as ToolImage, Tool } from "@prisma/client";
 import { useRouter } from 'next/navigation';
 import { createUpdateTool } from "@/actions";
 import { useState, useEffect } from 'react';
 import { useSession } from "next-auth/react";
 import Image from 'next/image';
 import imageCompression from 'browser-image-compression';
+import { deleteToolImage } from "@/actions/images/delete-tool-image";
 
 interface Props {
-  tool: Partial<Tool> & { images?: string[], categories?: Category[] };
+  tool: Partial<Tool> & { images?: ToolImage[], categories?: Category[] };
   categories: Category[];
 }
 
@@ -54,7 +55,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
   const { data: session } = useSession();
   const [previewImages, setPreviewImages] = useState<string[]>([]);
   const [newImages, setNewImages] = useState<File[]>([]);
-  const [existingImages, setExistingImages] = useState<string[]>(tool.images || []);
+  const [existingImages, setExistingImages] = useState<ToolImage[]>(tool.images || []);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [logoFile, setLogoFile] = useState<File | null>(null);
 
@@ -112,8 +113,16 @@ export const EditTICForm = ({ tool, categories }: Props) => {
     setNewImages(newImages.filter((_, i) => i !== index));
   };
 
-  const handleExistingImageRemove = (imageUrl: string) => {
-    setExistingImages(existingImages.filter(image => image !== imageUrl));
+  const handleExistingImageRemove = async (id: string) => {
+    const wantsToDelete = confirm('¿Estás seguro de que deseas eliminar esta imagen?, se eliminará de forma permanente aunque no guardes los cambios.');
+    if (!wantsToDelete) return;
+    try {
+      await deleteToolImage(id);
+      setExistingImages(existingImages.filter(image => image.id !== id));
+    } catch (error) {
+      console.error('Error al eliminar imagen:', error);
+      alert('Error al eliminar imagen');
+    }
   };
 
   const onSubmit = async (data: FormInputs) => {
@@ -173,7 +182,7 @@ export const EditTICForm = ({ tool, categories }: Props) => {
         formData.append('images', compressedFile);
       }
     } else {
-      existingImages.forEach(image => formData.append('existingImages', image));
+      existingImages.forEach(image => formData.append('existingImages', image.url));
     }
 
     const { ok, tool: updatedTool } = await createUpdateTool(formData);
@@ -414,14 +423,14 @@ export const EditTICForm = ({ tool, categories }: Props) => {
       <h6 className="f-size-18 mt-10">Imágenes</h6>
       {existingImages.length > 0 && (
         <div className="grid-c-4 gap-30 mt-20">
-          {existingImages.map((image, index) => (
-            <div key={index} className="existing-image-item" style={{ position: 'relative' }}>
-              <Image width={1000} height={1000} src={image} alt={`Existing Image ${index}`} className="existing-image max-width" />
+          {existingImages.map(image => (
+            <div key={image.id} className="existing-image-item" style={{ position: 'relative' }}>
+              <Image width={1000} height={1000} src={image.url} alt={`Existing Image ${image.url}`} className="existing-image max-width" />
               <Button
                 className="p-10 no-border"
                 style={{ position: 'absolute', top: 0, right: 0 }}
                 renderIcon={TrashCan}
-                onClick={() => handleExistingImageRemove(image)}
+                onClick={() => handleExistingImageRemove(image.id)}
               >
               </Button>
             </div>
