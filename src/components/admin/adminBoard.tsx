@@ -50,7 +50,6 @@ const AdminBoard = () => {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th></th>
             <th>Nombre</th>
             <th>Descripción</th>
             <th>Logo</th>
@@ -60,8 +59,6 @@ const AdminBoard = () => {
           {tools.map((tool, index) => (
             <React.Fragment key={index}>
               <tr onClick={() => toggleRow(index)} className={styles.tool}>
-              {/* <tr onClick={() => toggleRow(index)} className={styles.row}> */}
-                <td></td>
                 <td>{tool.name}</td>
                 <td>{tool.description}</td>
                 <td><Image src={tool.logo} width={150} height={100} alt={tool.name}/></td>
@@ -110,8 +107,8 @@ const AdminBoard = () => {
                             </ul>
                           )}
                         </td>
-                        <div> </div>
-                        <div className= "flex justify-content" style={{ gap: '16px' }}> 
+                        
+                        <div className= "flex justify-content" style={{ gap: '16px', paddingTop:10 }}> 
                           <Link href={`/admin/tic/${tool.name}`} className={styles.addButton}> Editar </Link>
                           <button className={styles.deleteButton}> Eliminar </button>
                         </div> 
