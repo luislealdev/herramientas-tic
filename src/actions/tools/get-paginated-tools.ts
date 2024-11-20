@@ -8,7 +8,7 @@ interface PaginationOptions {
     category?: string,
 }
 
-export const getPaginatedTools = async ({ page = 1, take = 1, search = '', category = '' }: PaginationOptions) => {
+export const getPaginatedTools = async ({ page = 1, take = 9, search = '', category = '' }: PaginationOptions) => {
     if (isNaN(Number(page))) page = 1;
     if (page < 1) page = 1;
 
