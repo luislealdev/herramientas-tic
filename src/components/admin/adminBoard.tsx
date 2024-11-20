@@ -1,12 +1,11 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import styles from './AdminBoard.module.css';
-import { FiArchive, FiCheckSquare, FiFilter, FiSearch } from 'react-icons/fi';
+import { FiArchive, FiFilter, FiSearch } from 'react-icons/fi';
 import Link from 'next/link';
 import { getPaginatedTools } from '@/actions/tools/get-paginated-tools';
 import { Tool } from '@prisma/client';
 import Image from 'next/image';
-import { auth } from '@/auth.config';
 
 
 const AdminBoard = () => {

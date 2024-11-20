@@ -121,3 +121,7 @@
     padding: 12px 30px;
     align-items: center;
   }
+  .image {
+    height: auto;
+    width: 100px;
+  }
