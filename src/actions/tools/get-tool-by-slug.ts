@@ -11,7 +11,10 @@ export const getToolBySlug = async (slug: string) => {
                 categories: true
             },
             where: {
-                slug: slug,
+                slug: {
+                    equals: slug,
+                    mode: 'insensitive', 
+                },
             }
         })
 

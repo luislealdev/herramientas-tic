@@ -1,26 +1,35 @@
-"use client";
-import React, { useState } from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 import styles from './AdminBoard.module.css';
-import { FiEdit2, FiFilter, FiSearch } from 'react-icons/fi';
+import { FiArchive, FiCheckSquare, FiFilter, FiSearch } from 'react-icons/fi';
 import Link from 'next/link';
-// import { FiSearch, FiEdit2, FiFilter } from 'react-icons/fi'; // Para los iconos
+import { getPaginatedTools } from '@/actions/tools/get-paginated-tools';
+import { Tool } from '@prisma/client';
+import Image from 'next/image';
+import { auth } from '@/auth.config';
+
 
 const AdminBoard = () => {
-  const [expandedRows, setExpandedRows] = useState<number[]>([]);
+  const [tools, setTools] = useState<Tool[]>([]);
+  const [expandedTools, setExpandedTools] = useState<number[]>([]);
 
   const toggleRow = (index: number) => {
-    if (expandedRows.includes(index)) {
-      setExpandedRows(expandedRows.filter((i) => i !== index));
+    if (expandedTools.includes(index)) {
+      setExpandedTools(expandedTools.filter((i) => i !== index));
     } else {
-      setExpandedRows([...expandedRows, index]);
+      setExpandedTools([...expandedTools, index]);
     }
   };
 
-  const rows = [
-    { name: 'Herramienta 1', date: '2024-10-10', description: 'Descripción 1', logo: 'Logo 1' },
-    { name: 'Herramienta 2', date: '2024-09-15', description: 'Descripción 2', logo: 'Logo 2' },
-    // Agrega más filas según sea necesario
-  ];
+  useEffect(() => {
+    const fetchTools = async () => {
+      const { tools } = await getPaginatedTools({ page: 1 });
+      setTools(tools);
+    };
+
+    fetchTools();
+  }, []);
+
 
   return (
     <div className={styles.adminBoard}>
@@ -33,38 +42,81 @@ const AdminBoard = () => {
           <FiSearch className={styles.icon} />
           <input type="text" placeholder="Buscar..." />
         </div>
-        <FiEdit2 className={styles.icon} />
         <FiFilter className={styles.icon} />
+        <FiArchive className={styles.icon} />        
         <Link href='/admin/tic/new' className={styles.addButton}>Agregar</Link>
       </div>
 
       <table className={styles.table}>
         <thead>
           <tr>
-            <th><input type="checkbox" /></th>
             <th>Nombre</th>
-            <th>Fecha de agregación</th>
             <th>Descripción</th>
             <th>Logo</th>
           </tr>
         </thead>
         <tbody>
-          {rows.map((row, index) => (
+          {tools.map((tool, index) => (
             <React.Fragment key={index}>
-              <tr onClick={() => toggleRow(index)} className={styles.row}>
-                <td><input type="checkbox" /></td>
-                <td>{row.name}</td>
-                <td>{row.date}</td>
-                <td>{row.description}</td>
-                <td>{row.logo}</td>
+              <tr onClick={() => toggleRow(index)} className={styles.tool}>
+                <td>{tool.name}</td>
+                <td>{tool.description}</td>
+                <td><Image src={tool.logo} width={150} height={100} alt={tool.name}/></td>
               </tr>
-              {expandedRows.includes(index) && (
-                <tr className={styles.expandedRow}>
-                  <td colSpan={5}>
-                    <div>Expandable table content</div>
-                  </td>
-                </tr>
-              )}
+
+                  {expandedTools.includes(index) && (
+                    <tr className={styles.setExpandedTools}>
+                      <td colSpan={4}>
+                        <td>
+                          <strong className={styles.header}> Ventajas </strong>                    
+                          {tool.advantages && (
+                            <ul className={styles.list}>
+                              {tool.advantages.map((advantage, index) => (
+                                <li key={index}>{advantage}</li>
+                              ))}
+                            </ul>
+                          )}
+                        </td>
+                        <td>
+                          <strong className={styles.header}> Desventajas </strong>
+                          {tool.disadvantages && (
+                            <ul className={styles.list}>
+                              {tool.disadvantages.map((disadvantage, index) => (
+                                <li key={index}>{disadvantage}</li>
+                              ))}
+                            </ul>
+                          )}
+                        </td>
+                        <td>
+                          <strong className={styles.header}> Características </strong>
+                          {tool.characteristics && (
+                            <ul className={styles.list}>
+                              {tool.characteristics.map((characteristics, index) => (
+                                <li key={index}>{characteristics}</li>
+                              ))}
+                            </ul>
+                          )}
+                        </td>
+                        <td>
+                        <strong className={styles.header}> Casos de uso </strong>
+                          {tool.useCases && (
+                            <ul className={styles.list}>
+                              {tool.useCases.map((useCases, index) => (
+                                <li key={index}>{useCases}</li>
+                              ))}
+                            </ul>
+                          )}
+                        </td>
+                        
+                        <div className= "flex justify-content" style={{ gap: '16px', paddingTop:10 }}> 
+                          <Link href={`/admin/tic/${tool.name}`} className={styles.addButton}> Editar </Link>
+                          <button className={styles.deleteButton}> Eliminar </button>
+                        </div> 
+                      </td>
+                    </tr> 
+                      
+                  )}
+              
             </React.Fragment>
           ))}
         </tbody>
