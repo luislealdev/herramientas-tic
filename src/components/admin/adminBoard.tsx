@@ -60,7 +60,7 @@ const AdminBoard = () => {
               <tr onClick={() => toggleRow(index)} className={styles.tool}>
                 <td>{tool.name}</td>
                 <td>{tool.description}</td>
-                <td><Image src={tool.logo} width={150} height={100} alt={tool.name}/></td>
+                <td><Image src={tool.logo} width={150} height={100} alt={tool.name} layout="responsive"/></td>
               </tr>
 
                   {expandedTools.includes(index) && (
@@ -108,7 +108,7 @@ const AdminBoard = () => {
                         </td>
                         
                         <div className= "flex justify-content" style={{ gap: '16px', paddingTop:10 }}> 
-                          <Link href={`/admin/tic/${tool.name}`} className={styles.addButton}> Editar </Link>
+                          <Link href={`/admin/tic/${tool.slug}`} className={styles.addButton}> Editar </Link>
                           <button className={styles.deleteButton}> Eliminar </button>
                         </div> 
                       </td>
