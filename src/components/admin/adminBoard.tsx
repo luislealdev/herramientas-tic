@@ -7,10 +7,13 @@ import { getPaginatedTools } from '@/actions/tools/get-paginated-tools';
 import { Tool } from '@prisma/client';
 import Image from 'next/image';
 
-
 const AdminBoard = () => {
   const [tools, setTools] = useState<Tool[]>([]);
   const [expandedTools, setExpandedTools] = useState<number[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const toggleRow = (index: number) => {
     if (expandedTools.includes(index)) {
@@ -20,15 +23,37 @@ const AdminBoard = () => {
     }
   };
 
+  const fetchTools = async () => {
+    const { tools, totalPages } = await getPaginatedTools({
+      page: currentPage,
+      take: itemsPerPage,
+      search: searchQuery,
+    });
+    setTools(tools);
+    setTotalPages(totalPages);
+  };
+
   useEffect(() => {
-    const fetchTools = async () => {
-      const { tools } = await getPaginatedTools({ page: 1 });
-      setTools(tools);
-    };
-
     fetchTools();
-  }, []);
+  }, [currentPage, itemsPerPage, searchQuery]);
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+    setCurrentPage(1); // Reset to first page on search
+  };
+
+  const handleItemsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setItemsPerPage(Number(e.target.value));
+    setCurrentPage(1); // Reset to first page on items per page change
+  };
+
+  const handlePageChange = (direction: 'prev' | 'next') => {
+    if (direction === 'prev' && currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    } else if (direction === 'next' && currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
 
   return (
     <div className={styles.adminBoard}>
@@ -39,11 +64,18 @@ const AdminBoard = () => {
       <div className={styles.toolbar}>
         <div className={styles.searchBox}>
           <FiSearch className={styles.icon} />
-          <input type="text" placeholder="Buscar..." />
+          <input
+            type="text"
+            placeholder="Buscar..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
         </div>
         <FiFilter className={styles.icon} />
-        <FiArchive className={styles.icon} />        
-        <Link href='/admin/tic/new' className={styles.addButton}>Agregar</Link>
+        <FiArchive className={styles.icon} />
+        <Link href="/admin/tic/new" className={styles.addButton}>
+          Agregar
+        </Link>
       </div>
 
       <table className={styles.table}>
@@ -60,82 +92,61 @@ const AdminBoard = () => {
               <tr onClick={() => toggleRow(index)} className={styles.tool}>
                 <td>{tool.name}</td>
                 <td>{tool.description}</td>
-                <td><Image src={tool.logo} width={150} height={100} alt={tool.name}/></td>
+                <td>
+                  <Image src={tool.logo} width={150} height={100} alt={tool.name} />
+                </td>
               </tr>
-
-                  {expandedTools.includes(index) && (
-                    <tr className={styles.setExpandedTools}>
-                      <td colSpan={4}>
-                        <td>
-                          <strong className={styles.header}> Ventajas </strong>                    
-                          {tool.advantages && (
-                            <ul className={styles.list}>
-                              {tool.advantages.map((advantage, index) => (
-                                <li key={index}>{advantage}</li>
-                              ))}
-                            </ul>
-                          )}
-                        </td>
-                        <td>
-                          <strong className={styles.header}> Desventajas </strong>
-                          {tool.disadvantages && (
-                            <ul className={styles.list}>
-                              {tool.disadvantages.map((disadvantage, index) => (
-                                <li key={index}>{disadvantage}</li>
-                              ))}
-                            </ul>
-                          )}
-                        </td>
-                        <td>
-                          <strong className={styles.header}> Características </strong>
-                          {tool.characteristics && (
-                            <ul className={styles.list}>
-                              {tool.characteristics.map((characteristics, index) => (
-                                <li key={index}>{characteristics}</li>
-                              ))}
-                            </ul>
-                          )}
-                        </td>
-                        <td>
-                        <strong className={styles.header}> Casos de uso </strong>
-                          {tool.useCases && (
-                            <ul className={styles.list}>
-                              {tool.useCases.map((useCases, index) => (
-                                <li key={index}>{useCases}</li>
-                              ))}
-                            </ul>
-                          )}
-                        </td>
-                        
-                        <div className= "flex justify-content" style={{ gap: '16px', paddingTop:10 }}> 
-                          <Link href={`/admin/tic/${tool.name}`} className={styles.addButton}> Editar </Link>
-                          <button className={styles.deleteButton}> Eliminar </button>
-                        </div> 
-                      </td>
-                    </tr> 
-                      
-                  )}
-              
+              {expandedTools.includes(index) && (
+                <tr className={styles.setExpandedTools}>
+                  <td colSpan={3}>
+                    {/* Información expandida */}
+                    <strong>Ventajas:</strong>
+                    <ul>
+                      {tool.advantages.map((adv, i) => (
+                        <li key={i}>{adv}</li>
+                      ))}
+                    </ul>
+                    <Link href={`/admin/tic/${tool.name}`} className={styles.addButton}>
+                      Editar
+                    </Link>
+                    <button className={styles.deleteButton}>Eliminar</button>
+                  </td>
+                </tr>
+              )}
             </React.Fragment>
           ))}
         </tbody>
       </table>
 
+      {/* Paginación */}
       <div className={styles.pagination}>
         <div className={styles.pageSize}>
-          <select>
-            <option value="100">100</option>
+          <select value={itemsPerPage} onChange={handleItemsPerPageChange}>
             <option value="50">50</option>
             <option value="25">25</option>
+            <option value="10">10</option>
           </select>
         </div>
-        <div>
-          <p>1-100 of 100 items</p>
+        <div className={styles.pagesInfo}>
+          <p>
+            Página {currentPage} de {totalPages}
+          </p>
         </div>
         <div className={styles.pageControls}>
-          <span>1 of 10 pages</span>
-          <button className={styles.pageButton}>&lt;</button>
-          <button className={styles.pageButton}>&gt;</button>
+          <button
+            className={styles.pageButton}
+            onClick={() => handlePageChange('prev')}
+            disabled={currentPage === 1}
+          >
+            &lt;
+          </button>
+          <button
+            className={styles.pageButton}
+            onClick={() => handlePageChange('next')}
+            disabled={currentPage === totalPages}
+          >
+            &gt;
+          </button>
         </div>
       </div>
     </div>
