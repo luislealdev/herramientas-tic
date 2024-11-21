@@ -7,10 +7,13 @@ import { getPaginatedTools } from '@/actions/tools/get-paginated-tools';
 import { Tool } from '@prisma/client';
 import Image from 'next/image';
 
-
 const AdminBoard = () => {
   const [tools, setTools] = useState<Tool[]>([]);
   const [expandedTools, setExpandedTools] = useState<number[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const toggleRow = (index: number) => {
     if (expandedTools.includes(index)) {
@@ -20,15 +23,37 @@ const AdminBoard = () => {
     }
   };
 
+  const fetchTools = async () => {
+    const { tools, totalPages } = await getPaginatedTools({
+      page: currentPage,
+      take: itemsPerPage,
+      search: searchQuery,
+    });
+    setTools(tools);
+    setTotalPages(totalPages);
+  };
+
   useEffect(() => {
-    const fetchTools = async () => {
-      const { tools } = await getPaginatedTools({ page: 1 });
-      setTools(tools);
-    };
-
     fetchTools();
-  }, []);
+  }, [currentPage, itemsPerPage, searchQuery]);
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+    setCurrentPage(1); // Reset to first page on search
+  };
+
+  const handleItemsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setItemsPerPage(Number(e.target.value));
+    setCurrentPage(1); // Reset to first page on items per page change
+  };
+
+  const handlePageChange = (direction: 'prev' | 'next') => {
+    if (direction === 'prev' && currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    } else if (direction === 'next' && currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
 
   return (
     <div className={styles.adminBoard}>
@@ -39,11 +64,18 @@ const AdminBoard = () => {
       <div className={styles.toolbar}>
         <div className={styles.searchBox}>
           <FiSearch className={styles.icon} />
-          <input type="text" placeholder="Buscar..." />
+          <input
+            type="text"
+            placeholder="Buscar..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
         </div>
         <FiFilter className={styles.icon} />
-        <FiArchive className={styles.icon} />        
-        <Link href='/admin/tic/new' className={styles.addButton}>Agregar</Link>
+        <FiArchive className={styles.icon} />
+        <Link href="/admin/tic/new" className={styles.addButton}>
+          Agregar
+        </Link>
       </div>
 
       <table className={styles.table}>
@@ -121,21 +153,35 @@ const AdminBoard = () => {
         </tbody>
       </table>
 
+      {/* Paginación */}
       <div className={styles.pagination}>
         <div className={styles.pageSize}>
-          <select>
-            <option value="100">100</option>
+          <select value={itemsPerPage} onChange={handleItemsPerPageChange}>
             <option value="50">50</option>
             <option value="25">25</option>
+            <option value="10">10</option>
           </select>
         </div>
-        <div>
-          <p>1-100 of 100 items</p>
+        <div className={styles.pagesInfo}>
+          <p>
+            Página {currentPage} de {totalPages}
+          </p>
         </div>
         <div className={styles.pageControls}>
-          <span>1 of 10 pages</span>
-          <button className={styles.pageButton}>&lt;</button>
-          <button className={styles.pageButton}>&gt;</button>
+          <button
+            className={styles.pageButton}
+            onClick={() => handlePageChange('prev')}
+            disabled={currentPage === 1}
+          >
+            &lt;
+          </button>
+          <button
+            className={styles.pageButton}
+            onClick={() => handlePageChange('next')}
+            disabled={currentPage === totalPages}
+          >
+            &gt;
+          </button>
         </div>
       </div>
     </div>
