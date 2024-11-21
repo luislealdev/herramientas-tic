@@ -92,27 +92,62 @@ const AdminBoard = () => {
               <tr onClick={() => toggleRow(index)} className={styles.tool}>
                 <td>{tool.name}</td>
                 <td>{tool.description}</td>
-                <td>
-                  <Image src={tool.logo} width={150} height={100} alt={tool.name} />
-                </td>
+                <td><Image src={tool.logo} width={150} height={100} alt={tool.name} layout="responsive"/></td>
               </tr>
-              {expandedTools.includes(index) && (
-                <tr className={styles.setExpandedTools}>
-                  <td colSpan={3}>
-                    {/* Información expandida */}
-                    <strong>Ventajas:</strong>
-                    <ul>
-                      {tool.advantages.map((adv, i) => (
-                        <li key={i}>{adv}</li>
-                      ))}
-                    </ul>
-                    <Link href={`/admin/tic/${tool.name}`} className={styles.addButton}>
-                      Editar
-                    </Link>
-                    <button className={styles.deleteButton}>Eliminar</button>
-                  </td>
-                </tr>
-              )}
+
+                  {expandedTools.includes(index) && (
+                    <tr className={styles.setExpandedTools}>
+                      <td colSpan={4}>
+                        <td>
+                          <strong className={styles.header}> Ventajas </strong>                    
+                          {tool.advantages && (
+                            <ul className={styles.list}>
+                              {tool.advantages.map((advantage, index) => (
+                                <li key={index}>{advantage}</li>
+                              ))}
+                            </ul>
+                          )}
+                        </td>
+                        <td>
+                          <strong className={styles.header}> Desventajas </strong>
+                          {tool.disadvantages && (
+                            <ul className={styles.list}>
+                              {tool.disadvantages.map((disadvantage, index) => (
+                                <li key={index}>{disadvantage}</li>
+                              ))}
+                            </ul>
+                          )}
+                        </td>
+                        <td>
+                          <strong className={styles.header}> Características </strong>
+                          {tool.characteristics && (
+                            <ul className={styles.list}>
+                              {tool.characteristics.map((characteristics, index) => (
+                                <li key={index}>{characteristics}</li>
+                              ))}
+                            </ul>
+                          )}
+                        </td>
+                        <td>
+                        <strong className={styles.header}> Casos de uso </strong>
+                          {tool.useCases && (
+                            <ul className={styles.list}>
+                              {tool.useCases.map((useCases, index) => (
+                                <li key={index}>{useCases}</li>
+                              ))}
+                            </ul>
+                          )}
+                        </td>
+                        
+                        <div className= "flex justify-content" style={{ gap: '16px', paddingTop:10 }}> 
+                          <Link href={`/admin/tic/${tool.slug}`} className={styles.addButton}> Editar </Link>
+                          <button className={styles.deleteButton}> Eliminar </button>
+                        </div> 
+                      </td>
+                    </tr> 
+                      
+                  )}
+              
             </React.Fragment>
           ))}
         </tbody>
