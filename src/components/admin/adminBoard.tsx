@@ -35,6 +35,8 @@ const AdminBoard = () => {
 
   useEffect(() => {
     fetchTools();
+     // Volver al inicio cuando cambia de página
+     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentPage, itemsPerPage, searchQuery]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {

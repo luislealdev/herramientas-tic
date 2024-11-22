@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { getPaginatedTools } from '@/actions/tools/get-paginated-tools';
 import ToolCardUI from '@/components/UI/ToolCard';
+import { set } from 'zod';
 
 interface Props {
   searchParams: {
@@ -46,6 +47,8 @@ const HomePage: React.FC<Props> = ({ searchParams }) => {
     };
 
     fetchTools();
+    // Volver al inicio cuando cambia de página
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [page, search, selectedCategories]);
 
   const handleCategoryClick = (category: string) => {
@@ -54,6 +57,7 @@ const HomePage: React.FC<Props> = ({ searchParams }) => {
         ? prevCategories.filter((cat) => cat !== category)
         : [...prevCategories, category]
     );
+    setPage(1);
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
