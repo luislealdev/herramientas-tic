@@ -46,6 +46,8 @@ const HomePage: React.FC<Props> = ({ searchParams }) => {
     };
 
     fetchTools();
+    // Volver al inicio cuando cambia de página
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [page, search, selectedCategories]);
 
   const handleCategoryClick = (category: string) => {
