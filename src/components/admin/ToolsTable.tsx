@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { getPaginatedTools } from '../../actions/tools/get-paginated-tools';
 import styles from './adminBoard.module.css';
 
-export const AdminBoard = () => {
+export const ToolsTable = () => {
   const [tools, setTools] = useState<Tool[]>([]);
   const [expandedTools, setExpandedTools] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(1);

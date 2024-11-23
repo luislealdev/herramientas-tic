@@ -1,9 +1,9 @@
-// import { AdminBoard } from "@/components";
+import { ToolsTable } from "@/components";
 
 const HomeAdminPage = () => {
   return (
     <main className='p-100'>
-      {/* <AdminBoard /> */}
+      <ToolsTable />
     </main>
   )
 }
