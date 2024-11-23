@@ -43,7 +43,3 @@ next-env.d.ts
 # postgres / Cambio cris
 
 /.idea
-/yarn.lock
-/package-lock.json
-yarn.lock
-package-lock.json
