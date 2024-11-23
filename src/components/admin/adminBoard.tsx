@@ -7,7 +7,7 @@ import { getPaginatedTools } from '@/actions/tools/get-paginated-tools';
 import { Tool } from '@prisma/client';
 import Image from 'next/image';
 
-const AdminBoard = () => {
+export const AdminBoard = () => {
   const [tools, setTools] = useState<Tool[]>([]);
   const [expandedTools, setExpandedTools] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -189,5 +189,3 @@ const AdminBoard = () => {
     </div>
   );
 };
-
-export default AdminBoard;
