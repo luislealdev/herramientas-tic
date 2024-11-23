@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { getPaginatedTools } from '@/actions/tools/get-paginated-tools';
 import ToolCardUI from '@/components/UI/ToolCard';
-import { set } from 'zod';
 
 interface Props {
   searchParams: {

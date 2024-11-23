@@ -1,4 +1,4 @@
-import AdminBoard from "@/components/admin/adminBoard";
+import AdminBoard from "@/components/admin/AdminBoard";
 
 const HomeAdminPage = () => {
   return (

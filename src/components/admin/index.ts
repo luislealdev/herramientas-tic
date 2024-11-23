@@ -1,2 +1,2 @@
 export * from './EditTICForm';
-export * from './adminBoard';
+export * from './AdminBoard';
