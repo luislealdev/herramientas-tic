@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Tool } from '@prisma/client';
 import Image from 'next/image';
 import { getPaginatedTools } from '../../actions/tools/get-paginated-tools';
-import styles from './adminBoard.module.css';
+import styles from './AdminBoard.module.css';
 
 export const ToolsTable = () => {
   const [tools, setTools] = useState<Tool[]>([]);
