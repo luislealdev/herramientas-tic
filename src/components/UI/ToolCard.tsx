@@ -12,12 +12,12 @@ interface Props {
 
 const ToolCardUI = ({ toolName, description, img, slug }: Props) => {
   return (
-    <div className='p-20 modal-subtitle bg-gray-m'>
+    <div className='p-20 modal-subtitle bg-gray-m animate__animated animate__zoomIn'>
       <h2 className=''>{toolName}</h2>
       <p className='mt-10'>{description}</p>
       <Image alt={toolName} src={img} width={500} height={300} className='max-width modal-actions' />
       <div className='flex justify-content'>
-        <Link href={`/herramienta/${slug}`} className='submit-button bg-blue modal-actions'>Ver más</Link>
+        <Link href={`/herramienta/${slug}`} className='submit-button bg-blue modal-actions shadow'>Ver más</Link>
       </div>
     </div>
   );
