@@ -1,16 +1,13 @@
 'use client';
 import React, {useState} from "react";
-//import { ToolsTable } from "./ToolsTable";
-//import { Tool } from '@prisma/client';
 import Link from 'next/link';
-//import { getPaginatedTools } from '../../actions/tools/get-paginated-tools';
 import Dashboard from "./dashboard/Dashboard";
 import { FiHome, FiMenu, FiTable } from "react-icons/fi";
 import styles from './AdminBoard.module.css';
 
 const AdminBoard = () => {
 
-    
+
     // Estado para manejar el menú y submenú
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
@@ -47,7 +44,7 @@ const AdminBoard = () => {
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link href="/admin/category/new">
+                                                <Link href="/admin/category">
                                                 <div>
                                                     <FiTable className={styles.icon} />
                                                 </div>
@@ -61,21 +58,16 @@ const AdminBoard = () => {
                             </ul>
                         </div>
                 </button>
-                </div>
-
-                <div>
-                    <h1>Dashboard</h1>
+                
+                    <h1 style={{ fontFamily: "'IBM Plex Sans', sans-serif" , padding: '10px', fontSize: '50px' } }>Dashboard</h1>
                 </div>
             
                 {/* Seccion de Estadísticas */}
                 <div>
-                    <h2>Estadisticas Generales</h2>
+                    <h2 style={{padding: '30px'}}>Estadisticas Generales</h2>
                     
-                    {/*
-                    <p>Total de herramientas: {tools.length}</p>
-                    <p>Total de categorias: 2</p>
-                    */}
                     <Dashboard />
+                    {/* Aqui se agrega info si se quiere poner por debajo del boton de menu */}
                     
                 </div>
 
