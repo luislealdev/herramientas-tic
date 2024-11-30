@@ -7,11 +7,20 @@ import styles from './AdminBoard.module.css';
 import { Category } from '@prisma/client';
 
 export const CategoriesTable = () => {
-  const [categories, setCategories] = useState<Category[]>([]); 
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [expandedCategories, setExpandedCategories] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchQuery, setSearchQuery] = useState('');
+
+  const toggleRow = (index: number) => {
+    if (expandedCategories.includes(index)) {
+      setExpandedCategories(expandedCategories.filter((i) => i !== index));
+    } else {
+      setExpandedCategories([...expandedCategories, index]);
+    }
+  };
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -77,10 +86,24 @@ export const CategoriesTable = () => {
           </tr>
         </thead>
         <tbody>
-          {categories.map((category, index) => (
-            <tr key={index} className={styles.category}>
-              <td>{category.name}</td>
-            </tr>
+        {categories.map((tool, index) => (
+            <React.Fragment key={index}>
+              <tr onClick={() => toggleRow(index)} className={styles.tool}>
+                <td>{tool.name}</td>
+              </tr>
+
+              {expandedCategories.includes(index) && (
+                <tr className={styles.setExpandedTools}>
+                  <td>
+                    <div className="flex justify-content" style={{ gap: '16px', paddingTop: 10 }}>
+                      <Link href={`/admin/category/${tool.name}`} className={styles.addButton}> Editar </Link>
+                      <button className={styles.deleteButton}> Eliminar </button>
+                    </div>
+                  </td>
+                </tr>
+              )}
+              
+            </React.Fragment>
           ))}
         </tbody>
       </table>
