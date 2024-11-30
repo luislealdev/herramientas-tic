@@ -21,4 +21,4 @@ Para poder modificar  o editar la página, anexamos en la URL lo siguiente: `app
 
 Para la conexión a la base de datos se tiene que renoombrar el archivo ".env.template" a ".env"
 
-Al momento de instalar las dependencias, si ya existe el archivo "yarn.lock" previo a la instalación, eliminarlo y ejecutar el comando en la terminal correspondiente.
+Al momento de instalar las dependencias, si ya existe el archivo "yarn.lock" previo a la instalación eliminarlo y ejecutar el comando en la terminal correspondiente.
