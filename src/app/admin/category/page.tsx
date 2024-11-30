@@ -1,6 +1,6 @@
 import { CategoriesTable } from "@/components";
 
-const HomeAdminPage = () => {
+const CategoriesPage = () => {
   return (
     <main className='p-100'>
       <CategoriesTable />
@@ -8,4 +8,4 @@ const HomeAdminPage = () => {
   )
 }
 
-export default HomeAdminPage;
+export default CategoriesPage;

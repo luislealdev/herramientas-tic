@@ -41,6 +41,6 @@ export const getPaginatedCategories = async ({ page = 1, take = 9, search = '' }
       };
   } catch (error) {
       console.error(error);
-      throw new Error("No se pudieron cargar las herramientas");
+      throw new Error("No se pudieron cargar las categorías");
   }
 };
