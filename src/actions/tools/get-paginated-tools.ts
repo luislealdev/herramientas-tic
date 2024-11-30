@@ -35,7 +35,8 @@ export const getPaginatedTools = async ({ page = 1, take = 9, search = '', categ
             },
             where,
             include: {
-                images: true
+                images: true,
+                categories: true
             }
         });
         const totalCount = await prisma.tool.count({ where });

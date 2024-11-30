@@ -23,8 +23,17 @@
 }
 .donutText {
   position: absolute;
-  top: 59%;
-  left: 90%;
+  top: 56%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
+.donutTextTool {
+  position: absolute;
+  top: 63%;
+  left: 50%;
   transform: translate(-50%, -50%);
   font-size: 20px;
   font-weight: bold;
