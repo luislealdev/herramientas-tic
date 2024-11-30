@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-
 export const logToolAction = async (
   action: 'create' | 'update' | 'delete',
   toolData: string,
