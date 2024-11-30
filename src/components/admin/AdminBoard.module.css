@@ -1,6 +1,7 @@
 /* components/AdminBoard.module.css */
 .adminBoard {
-  padding: 20px;
+  position : realtive;
+  padding: 10px;
   font-family: 'IBM Plex Sans', sans-serif;
 }
 
@@ -131,4 +132,131 @@
 .image {
   height: auto;
   width: 100px;
+}
+
+.segmented-bar {
+  border-bottom: 2px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.segmented-bar .btn-left,
+.segmented-bar .btn-right {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.segmented-bar .btn-left:hover,
+.segmented-bar .btn-right:hover {
+  background-color: #0056b3;
+}
+
+.chartContainer {
+  width: 100%;
+  height: 100%;
+  background-color: #e0e0e0; /* Fondo gris claro */
+  padding: 20px;
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  display: flex;
+  align-items: justify;
+}
+.backButton {
+  background-color: #e0e0e000;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 12px 30px;
+  align-items: justify;
+}
+.backButton:hover {
+  background-color: #e0e0e000;
+}
+/* Estilo para el botón del menú */
+.menu-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background-color: #008000;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 1000;
+  border-radius: 5px;
+}
+
+.menu-btn:focus {
+  outline: none;
+}
+
+/* Estilos del menú lateral */
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: -250px; /* El menú comienza fuera de la pantalla */
+  width: 250px;
+  height: 100%;
+  background-color: #333;
+  transition: left 0.3s ease-in-out; /* Transición suave */
+  z-index: 999;
+  padding-top: 60px; /* Espacio para evitar que el menú quede bajo el botón */
+}
+
+.side-menu.open {
+  left: 0; /* Menú se despliega cuando se añade la clase 'open' */
+}
+
+/* Estilos para los enlaces dentro del menú lateral */
+.side-menu ul {
+  list-style-type: none;
+  padding: 20px;
+  margin: 0;
+}
+
+.side-menu ul li {
+  margin-bottom: 20px;
+}
+
+.side-menu ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  transition: color 0.3s;
+}
+
+.side-menu ul li a:hover {
+  color: #FFD700; /* Color del enlace al pasar el mouse */
+}
+
+/* Estilos para el submenú */
+.sub-menu {
+  list-style-type: none;
+  margin-left: 20px;
+  margin-top: 10px;
+}
+
+.sub-menu li {
+  margin-bottom: 10px;
+}
+
+.sub-menu li a {
+  font-size: 16px;
+  color: #ddd;
+}
+
+.sub-menu li a:hover {
+  color: #FFD700;
+}
+
+/* Estilos para el contenido principal */
+.main-content {
+  margin-left: 20px; /* Deja espacio si el menú está visible */
 }

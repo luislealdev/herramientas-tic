@@ -1,9 +1,10 @@
-import { ToolsTable } from "@/components";
+
+import AdminBoard from "@/components/admin/AdminBoard";
 
 const HomeAdminPage = () => {
   return (
     <main className='p-100'>
-      <ToolsTable />
+      <AdminBoard />
     </main>
   )
 }

@@ -1,0 +1,33 @@
+.dashBoardContainer {
+    width: 100%;
+    height: 300px;
+    background-color: #e0e0e0; /* Fondo gris claro */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  }
+.chartContainer {
+    width: 100%;
+    height: 300px;
+    background-color: #e0e0e0; /* Fondo gris claro */
+    padding: 20px;
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    display: flex;
+    align-items: justify;
+}
+.donut { 
+  position: relative; 
+  width: 300px; 
+  height: 300px 
+}
+.donutText {
+  position: absolute;
+  top: 59%;
+  left: 90%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
+  

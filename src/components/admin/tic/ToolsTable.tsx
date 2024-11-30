@@ -4,8 +4,8 @@ import { FiArchive, FiFilter, FiSearch } from 'react-icons/fi';
 import Link from 'next/link';
 import { Tool } from '@prisma/client';
 import Image from 'next/image';
-import { getPaginatedTools } from '../../actions/tools/get-paginated-tools';
-import styles from './AdminBoard.module.css';
+import { getPaginatedTools } from '@/actions/tools/get-paginated-tools';
+import styles from '../AdminBoard.module.css';
 
 export const ToolsTable = () => {
   const [tools, setTools] = useState<Tool[]>([]);
@@ -59,11 +59,10 @@ export const ToolsTable = () => {
 
   return (
     <div className={styles.adminBoard}>
-      <h1>Base de datos de Herramientas TIC</h1>
-      <p>Todas las herramientas registradas hasta el momento</p>
+
 
       {/* Barra de herramientas */}
-      <div className={styles.toolbar}>
+      <div className={styles.toolbar }>
         <div className={styles.searchBox}>
           <FiSearch className={styles.icon} />
           <input
