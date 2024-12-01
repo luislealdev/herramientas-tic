@@ -157,12 +157,24 @@
   background-color: #0056b3;
 }
 
-.chartContainer {
+.adminContainer {
   margin-left: 0;
   transition: margin-left 0.3s ease-in-out;
   width: 100%;
   height: 100%;
   background-color: #e0e0e0; /* Fondo gris claro */
+  padding: 20px;
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  display: flex;
+  align-items: flex-start;
+}
+.chartContainer {
+  margin-left: 0;
+  transition: margin-left 0.3s ease-in-out;
+  width: 100%;
+  height: 100%;
+  background-color: #e0e0e000; /* Fondo gris claro */
   padding: 20px;
   border-radius: 10px; /* Bordes redondeados */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
@@ -190,8 +202,8 @@
   position: fixed;
   top: 20px;
   left: 20px;
-  background-color: #008000;
-  color: white;
+  background-color: #00800000;
+  color: rgba(255, 255, 255, 0);
   border: none;
   padding: 10px 15px;
   font-size: 20px;
