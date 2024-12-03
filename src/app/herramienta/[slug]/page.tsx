@@ -3,6 +3,7 @@ import { Metadata, ResolvingMetadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import React from 'react'
+import ImageGallery from '@/components/UI/ImageGallery';
 
 interface Props {
     params: {
@@ -83,11 +84,7 @@ const ToolPage = async ({ params }: Props) => {
             </section>
             <section className='ph-100'>
                 <h2>Imágenes</h2>
-                <div className='grid-c-3 gap-30'>
-                    {
-                        tool.images.map((image, index) => <Image key={index} alt={tool.name} src={image.url} width={500} height={500} className='max-width' />)
-                    }
-                </div>
+                <ImageGallery images={tool.images} toolName={tool.name} />
             </section>
         </main>
     )
