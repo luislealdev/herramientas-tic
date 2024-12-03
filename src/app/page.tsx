@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { getPaginatedTools } from '@/actions/tools/get-paginated-tools';
 import ToolCardUI from '@/components/UI/ToolCard';
+import Loader from '@/components/UI/Loader';
 
 interface Props {
   searchParams: {
@@ -33,18 +34,24 @@ const HomePage: React.FC<Props> = ({ searchParams }) => {
   const [totalPages, setTotalPages] = useState(1);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchTools = async () => {
-      const { tools, totalPages } = await getPaginatedTools({
-        page,
-        search,
-        category: selectedCategories.join(','),
-      });
-      setTools(tools);
-      setTotalPages(totalPages);
-    };
-
+      setIsLoading(true);
+      try {
+        const { tools, totalPages } = await getPaginatedTools({
+          page,
+          search,
+          category: selectedCategories.join(','),
+        });
+        setTools(tools);
+        setTotalPages(totalPages);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }}
     fetchTools();
     // Volver al inicio cuando cambia de página
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -98,44 +105,24 @@ const HomePage: React.FC<Props> = ({ searchParams }) => {
   return (
     <main>
       <div className="flex align-center space-between ph-40 column-in-mobile">
-  <h1 className="f-size-70 button">Ticnify</h1>
-  <input
-    type="text"
-    style={{
-      maxWidth: '300px',
-      transition: 'all 0.3s ease-in-out',
-      border: '1px solid #ccc',
-      backgroundColor: '#f9f9f9',
-      boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
-      outline: 'none',
-    }}
-    placeholder="Buscar..."
-    value={search}
-    onChange={handleSearchChange}
-    onKeyPress={handleSearchKeyPress}
-    /*
-    Animación para la barra de busqueda con js
-    onFocus={(e) => {
-      e.target.style.maxWidth = '400px';
-      e.target.style.backgroundColor = '#ffffff';
-      e.target.style.border = '1px solid #007BFF';
-      e.target.style.boxShadow = '0 4px 10px rgba(0, 123, 255, 0.3)';
-    }}
-    onBlur={(e) => {
-      e.target.style.maxWidth = '300px';
-      e.target.style.backgroundColor = '#f9f9f9';
-      e.target.style.border = '1px solid #ccc';
-      e.target.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.1)';
-    }} */      
-  />
-    </div>
+        <h1 className="f-size-70 button">Ticnify</h1>
+        <input
+          type="text"
+          className="p-10 ph-20"
+          placeholder="Buscar..."
+          style={{ maxWidth: 300 }}
+          value={search}
+          onChange={handleSearchChange}
+          onKeyPress={handleSearchKeyPress}
+        />
+      </div>
       <div>
         <p className="center-text">Selecciona las categorías de las herramientas</p>
         <div className="flex align-center justify-content gap-30 mt-10 grid-c-2-in-mobile">
           {['Planificación', 'Ejecución', 'Monitoreo', 'Cierre'].map((cat) => (
             <button
               key={cat}
-              className={`ph-20 p-10 no-border radius-30 shadow grow ${
+              className={`ph-20 p-10 no-border radius-30 ${
                 selectedCategories.includes(cat) ? 'bg-blue white-text bold' : 'bold'
               }`}
               onClick={() => handleCategoryClick(cat)}
@@ -146,21 +133,27 @@ const HomePage: React.FC<Props> = ({ searchParams }) => {
         </div>
       </div>
       <section className="grid-c-3 gap-30 p-20 mt-50" style={{minHeight: "30vh"}}>
-        {tools.map((tool) => (
-          <ToolCardUI
-            key={tool.slug}
-            img={tool.logo ? tool.logo : tool.images[0]?.url || ''}
-            toolName={tool.name}
-            description={tool.description.substring(0, 150) + '...'}
-            slug={tool.slug}
-          />
-        ))}
+        {isLoading ? (
+          <Loader />
+        ) : tools.length > 0 ? (
+          tools.map((tool) => (
+            <ToolCardUI
+              key={tool.slug}
+              img={tool.logo ? tool.logo : tool.images[0]?.url || ''}
+              toolName={tool.name}
+              description={tool.description.substring(0, 150) + '...'}
+              slug={tool.slug}
+            />
+          ))
+        ) : (
+          <p className="center-h">No se encontraron herramientas</p>
+        )}
       </section>
       <div className="flex justify-content align-center mt-20">
         <button
           onClick={handlePreviousPage}
           disabled={page === 1}
-          className="ph-20 p-10 no-border radius-30 bold glass-morphism grow"
+          className="ph-20 p-10 no-border radius-30 bold bg-light-gray"
         >
           Anterior
         </button>
@@ -168,7 +161,7 @@ const HomePage: React.FC<Props> = ({ searchParams }) => {
         <button
           onClick={handleNextPage}
           disabled={page === totalPages}
-          className="ph-20 p-10 no-border radius-30 bold glass-morphism grow"
+          className="ph-20 p-10 no-border radius-30 bold bg-light-gray"
         >
           Siguiente
         </button>
