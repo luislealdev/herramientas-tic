@@ -153,7 +153,7 @@ const HomePage: React.FC<Props> = ({ searchParams }) => {
         <button
           onClick={handlePreviousPage}
           disabled={page === 1}
-          className="ph-20 p-10 no-border radius-30 bold bg-light-gray"
+          className="ph-20 p-10 no-border radius-30 bold glass-morphism grow"
         >
           Anterior
         </button>
@@ -161,7 +161,7 @@ const HomePage: React.FC<Props> = ({ searchParams }) => {
         <button
           onClick={handleNextPage}
           disabled={page === totalPages}
-          className="ph-20 p-10 no-border radius-30 bold bg-light-gray"
+          className="ph-20 p-10 no-border radius-30 bold glass-morphism grow"
         >
           Siguiente
         </button>
