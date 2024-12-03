@@ -1,14 +1,33 @@
 'use client';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableHeader, TableRow, TableToolbar, TableToolbarContent, Dropdown, Pagination } from '@carbon/react';
 import '../../globals.scss';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Log } from '@prisma/client';
+import { getLogs } from '@/actions/tools/get-logs';
 
-export const LogsTable = ({ logs }: { logs: Array<{ action: string; madeBy: string; realizedAt: string; details: string }> }) => {
+export const LogsTable = () => {
     const headers = ['Accion', 'Hecha por', 'Fecha de realizado', 'Detalles'];
+    const [logs, setLogs] = useState<Log[]>([]);
+    const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [filter, setFilter] = useState('todos');
     const pageSize = 10;
     const totalItems = logs.length;
+
+    useEffect(() => {
+        const fetchLogs = async () => {
+            try {
+                const data = await getLogs();
+                setLogs(data);
+            } catch (error) {
+                console.error('Failed to fetch logs:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchLogs();
+    }, []);
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
@@ -26,6 +45,10 @@ export const LogsTable = ({ logs }: { logs: Array<{ action: string; madeBy: stri
     });
 
     const paginatedLogs = filteredLogs.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <TableContainer title="Logs" description="Visualización de logs del sistema">
@@ -57,8 +80,8 @@ export const LogsTable = ({ logs }: { logs: Array<{ action: string; madeBy: stri
                         <TableRow key={index}>
                             <TableCell>{log.action}</TableCell>
                             <TableCell>{log.madeBy}</TableCell>
-                            <TableCell>{log.realizedAt}</TableCell>
-                            <TableCell>{log.details}</TableCell>
+                            <TableCell>{new Date(log.realizedAt).toISOString()}</TableCell>
+                            <TableCell>{JSON.stringify(log.details)}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
