@@ -1,9 +1,5 @@
 'use client';
-//import React, {useState} from "react";
-//import Link from 'next/link';
 import Dashboard from "./dashboard/Dashboard";
-//import { FiDatabase, FiMenu, FiHome } from "react-icons/fi";
-//import styles from './AdminBoard.module.css';
 
 const AdminBoard = () => {
 

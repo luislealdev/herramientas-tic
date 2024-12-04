@@ -1,7 +1,4 @@
-
 import AdminBoard from "@/components/admin/AdminBoard";
-//import styles from "@/components/admin/AdminBoard.module.css";
-//import Menu from "@/components/admin/Menu";
 
 const HomeAdminPage = () => {
   return (
