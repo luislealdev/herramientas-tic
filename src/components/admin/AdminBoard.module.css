@@ -158,13 +158,12 @@
 }
 
 .adminContainer {
-  margin-left: 0;
-  transition: margin-left 0.3s ease-in-out;
+
   width: 100%;
-  height: 100%;
+  height: auto;
   background-color: #e0e0e0; /* Fondo gris claro */
-  padding: 20px;
-  border-radius: 10px; /* Bordes redondeados */
+  padding: 10px 20px;
+  border-radius: 50px; /* Bordes redondeados */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
   display: flex;
   align-items: flex-start;
@@ -199,21 +198,17 @@
 
 /* Estilo para el botón del menú */
 .menu-btn {
-  position: fixed;
+  position: center;
   top: 20px;
-  left: 20px;
-  background-color: #00800000;
-  color: rgba(255, 255, 255, 0);
-  border: none;
+  background: none;
+  background-color: #e0e0e0;
   padding: 10px 15px;
-  font-size: 20px;
   cursor: pointer;
-  z-index: 1000;
-  border-radius: 5px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  z-index: 1002;
+  transition: background-color 0.5s , transform 0.4s ease;
 }
 .menu-btn:hover {
-  background-color: #005f00;
+  background-color: #e0e0e0;
   transform: scale(1.1);
 }
 
@@ -225,40 +220,51 @@
 .side-menu {
   position: fixed;
   top: 0;
-  left: 0; /* El menú comienza fuera de la pantalla */
-  transform: translateX(-100%);
+  right: -250px; 
   width: 250px;
   height: 100%;
-  background-color: #333;
-  transition: transform 0.3s ease-in-out; /* Transición suave */
-  z-index: 999;
-  padding-top: 60px; /* Espacio para evitar que el menú quede bajo el botón */
+  background-color: #e0e0e0;
+  z-index: 1001;
+  padding: 20px;
+  transition: transform 0.6s ease-in-out; /* Transición suave */
+}
+
+.sideMenuOverlay {
+  position: fixed;
+  padding: 10px;
+  top: 69px;
+  left: 80px;
+  width: auto;
+  height: auto;
+  background-color: #e0e0e0d9; 
+  z-index: 1001;
+  display:flexbox; 
 }
 
 .side-menu.open {
-  transform: translateX(0); /* Menú se despliega cuando se añade la clase 'open' */
+  right: 0;
 }
 
 /* Estilos para los enlaces dentro del menú lateral */
 .side-menu ul {
-  list-style-type: none;
+  list-style: none;
   padding: 20px;
   margin: 0;
+  align-items: center;
 }
 
-.side-menu ul li {
+.side-menu li {
   margin-bottom: 20px;
-}
-
-.side-menu ul li a {
   color: white;
-  text-decoration: none;
+  padding: 20px;
   font-size: 18px;
   transition: color 0.3s ease;
+  gap: 8px;
+  
 }
 
-.side-menu ul li a:hover {
-  color: #FFD700; /* Color del enlace al pasar el mouse */
+.side-menu ul li :hover {
+  color: #e0e0e0; /* Color del enlace al pasar el mouse */
 }
 
 /* Estilos para el submenú */
@@ -281,7 +287,7 @@
 }
 
 .sub-menu li a:hover {
-  color: #FFD700;
+  color: #000000;
 }
 
 /* Estilos para el contenido principal */
@@ -289,12 +295,12 @@
   margin-left: 20px; /* Deja espacio si el menú está visible */
 }
 
-/* --------------------------- Ajustes Responsivos --------------------------- */
+/* --------------------------- Responsive --------------------------- */
 
 /* Menú lateral en pantallas pequeñas */
 @media (max-width: 768px) {
   .side-menu {
-    width: 200px; /* El menú comienza fuera de la pantalla */
+    width: 200px; 
   }
 
   .side-menu.open {

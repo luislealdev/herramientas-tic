@@ -1,9 +1,10 @@
 'use client';
 import React, {useEffect, useState} from 'react';
-import { Doughnut } from 'react-chartjs-2';  // Importa el gráfico de dona
+import { Doughnut, Radar } from 'react-chartjs-2';  // Importa el gráfico de dona
 import { Tool as PrismaTool, Category } from '@prisma/client';
 import { getPaginatedTools } from '@/actions/tools/get-paginated-tools';
 import styles from './DashBoard.module.css';
+//import { getLogs } from '@/actions/tools/get-logs';
 
 import {
   Chart as ChartJS,
@@ -15,7 +16,8 @@ import {
   LinearScale,
   PointElement,
   LineElement,
-  TooltipItem
+  TooltipItem,
+  RadialLinearScale, //Escencial para el radar chart
 } from 'chart.js';
 
 // Elementos de Chart.js
@@ -27,7 +29,8 @@ ChartJS.register(
   CategoryScale,
   LinearScale,
   PointElement,
-  LineElement
+  LineElement,
+  RadialLinearScale, //Radar chart
 );
 
 interface ToolWithCategories extends PrismaTool {
@@ -85,7 +88,7 @@ const Dashboard = () => {
 
 
   // Opciones de configuración del gráfico
-  const options = {
+  const doughnutoptions = {
     responsive: true, // Hace que el gráfico sea responsivo
     maintainAspectRatio: false, // Permite que cambie el tamaño, sin mantener la relación de aspecto fija
     plugins: {
@@ -101,22 +104,70 @@ const Dashboard = () => {
       },
     },
   };
+  // Radar Chart estático
+  const radarData = {
+    type: 'radar',
+    labels: ['Create', 'Update', 'Delete'], // Acciones de ejemplo
+    datasets: [
+      {
+        label: 'Tool Actions',
+        data: [10, 15, 5], // Ejemplo de datos
+        ...(() => {
+          const color = getRandomColor(); // Genera un único color
+          return {
+            backgroundColor: color,
+            borderColor: color,
+            pointBackgroundColor: color,
+          };
+        })(),
+
+      },
+      
+      {
+        label: 'Log Categories', // Segundo dataset para categorías
+        data: [8, 12, 3], // Ejemplo de datos de categorías
+        ...(() => {
+          const color = getRandomColor(); // Genera un único color
+          return {
+            backgroundColor: color,
+            borderColor: color,
+            pointBackgroundColor: color,
+          };
+        })(),
+      },
+    ],
+  };
+
+  const radarOptions = {
+    responsive: true,
+    scales: {
+      r: {
+        angleLines: {
+          display: false,
+        },
+      },
+    },
+  };
+
   
   return (
-    <div>
-      
-      <div className={styles.donut}>
-        {tools.length > 0 ? (
-          <Doughnut data={data} options={options} />
-        ) : (
-          <p>{tools.length === 0 ? "No tools available" : "Loading tools..."}</p>
-        )}  
-        <div className={styles.donutTextContainer}>
-          <p className={styles.donutText}>{tools.length}</p> 
-          <p className={styles.donutTextTool}>Tools</p>
+    <div className='flex align-center space-between ph-40 column-in-mobile grid-c-3'>
+      <div className={styles.adminBoard}>
+        <div className={styles.donut}>
+          {tools.length > 0 ? (
+            <Doughnut data={data} options={doughnutoptions} />
+          ) : (
+            <p>{tools.length === 0 ? "No tools available" : "Loading tools..."}</p>
+          )}  
+          <div className={styles.donutTextContainer}>
+            <p className={styles.donutText}>{tools.length}</p> 
+            <p className={styles.donutTextTool}>Tools</p>
+          </div>
         </div>
-    </div>
-
+        <div className={styles.radar}>
+          <Radar data={radarData} options={radarOptions} />
+        </div>
+      </div>
     </div>
   );
 };

@@ -58,7 +58,8 @@ export const ToolsTable = () => {
   };
 
   return (
-    <div className={styles.adminBoard}>
+    <div className='flex align-center space-between ph-40 column-in-mobile'>
+      <div className={styles.adminBoard}>
 
 
       {/* Barra de herramientas */}
@@ -185,6 +186,7 @@ export const ToolsTable = () => {
           </button>
         </div>
       </div>
+    </div>
     </div>
   );
 };

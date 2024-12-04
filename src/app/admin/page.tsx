@@ -1,11 +1,13 @@
 
 import AdminBoard from "@/components/admin/AdminBoard";
-import styles from "@/components/admin/AdminBoard.module.css";
+//import styles from "@/components/admin/AdminBoard.module.css";
+//import Menu from "@/components/admin/Menu";
 
 const HomeAdminPage = () => {
   return (
     <main className='p-10' >
-      <div className={styles.adminContainer}>
+      
+      <div >
       <AdminBoard />
       </div>
     </main>

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import './globals.css';
 import { Providers } from "@/components/providers/Providers";
 import 'carbon-components/css/carbon-components.min.css';
 import Link from "next/link";
-import Menu from "@/components/admin/Menu";
+
 
 export const metadata: Metadata = {
   title: "Ticnify | Herramientas de gestión de proyectos",
@@ -26,14 +26,16 @@ export const metadata: Metadata = {
   robots: "index, follow",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
 
   // Get the current year
-  const year = new Date().getFullYear();
+  const year = new Date().getFullYear(
+
+  );
 
   return (
     <html lang="es-co">
@@ -45,25 +47,23 @@ export default function RootLayout({
       <body>
         <Providers>
           <nav className="flex space-between p-20 align-center gap-25">
-            <div className="flex align-center gap-25">
+            <div className="flex align-center gap-25 ">
 
 
             <Link href="/">
-              <h6 className="black-text">Ticnify Menú</h6>
+              <h6 className="black-text menu-item">Ticnify Menú</h6>
             </Link>
 
             <hr style={{ width: 20 }} />
             
-            <Link href="/" className="gray-text"> Herramientas </Link>
+            <Link href="/" className="gray-text menu-item"> Herramientas </Link>
             
-            <Link href="/admin" className="gray-text"> Admin </Link>
+            <Link href="/admin" className="gray-text menu-item"> Admin </Link>
             
-            <Link href="/contacto" className="gray-text"> Contacto </Link>
+            <Link href="/contacto" className="gray-text menu-item"> Contacto </Link>
             
             </div>
-               
-                {/* Menu desplegabkl */} 
-                <Menu />               
+   
           </nav>
           {children}
           <footer className="p-20 bg-gray-m mt-50">

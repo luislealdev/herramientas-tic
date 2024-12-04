@@ -1,6 +1,6 @@
 'use client';
 import Link from "next/link";
-import { FiMenu, FiHome, FiDatabase } from "react-icons/fi";
+import { FiMenu, FiHome, FiList, FiTool } from "react-icons/fi";
 import styles from "@/components/admin/AdminBoard.module.css";
 import { useState } from "react";
 
@@ -16,39 +16,41 @@ const Menu = () => {
         };
 
     return (
-        <div className="flex end align-center relative">
-            <div className="flex end align-center relative">
+        <div >
+            <div className=" align-center relative">
                 {/* Botón de menú */}
-                <button onClick={toggleMenu} className="menu-btn btn-right">
+                <button onClick={toggleMenu} className={`${styles.menuBtn}`} arial-label="Toggle menu">
                     <FiMenu className={styles.icon} />
                 </button>
 
                 {/* Menú lateral superpuesto */}
                 {isMenuOpen && (
-                    <div className={`${styles.sideMenuOverlay} ${isMenuOpen ? styles.open : ''}`}>
-                        <div className={styles.sideMenu}>
+                    <div 
+                    className={`${styles.sideMenuOverlay} ${isMenuOpen ? 'open' : ''}`}
+                    onClick={toggleMenu}>
+                        <div className={`{styles.sideMenu} ${isMenuOpen ? 'open' : ''}`}>
                             <ul className={styles.icon}>
-                                <li>
-                                    <Link href="/admin/tic">
-                                        <FiDatabase className={styles.icon} />
+                                <li >
+                                    <Link href="/admin/tic" className="flex align-center">
+                                        <FiTool className={styles.icon} />
                                         Herramientas
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/admin/category">
-                                        <FiDatabase className={styles.icon} />
+                                    <Link href="/admin/category"  className="flex align-center">
+                                        <FiList className={styles.icon} />
                                         Categorías
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/">
+                                    <Link href="/admin"  className="flex align-center">
                                         <FiHome className={styles.icon} />
                                         Menú
                                     </Link>
                                 </li>
                             </ul>
                         </div>
-                    </div>
+                </div>
                 )}
             </div>
         </div>
