@@ -1,14 +1,13 @@
-'use client';
-
-import React from 'react';
-import { LogsTable } from '@/components/admin/LogsTable';
+import { LogsTable } from '@/components';
 
 const LogsPage = () => {
     return (
-        <div style={{ paddingLeft: '6.2rem', paddingRight: '6.2rem' }}>
-            <LogsTable/>
-        </div>
-    );
-};
+        <main>
+            <div className='p-10'>
+                <LogsTable/>
+            </div>
+        </main>
+    )
+}
 
 export default LogsPage;

@@ -180,6 +180,9 @@
   display: flex;
   align-items: flex-start;
 }
+.menuContainer{
+  width: auto;
+}
 .side-menu.open ~ .chartContainer {
   margin-left: 250px; /* Espacio cuando el menú está abierto */
 }
@@ -199,6 +202,7 @@
 /* Estilo para el botón del menú */
 .menu-btn {
   position: center;
+  width: auto;
   top: 20px;
   background: none;
   background-color: #e0e0e0;

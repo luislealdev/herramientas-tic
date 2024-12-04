@@ -5,3 +5,4 @@ export * from './HomeTable';
 export * from './AdminBoard';
 export * from './tic';
 export * from './category';
+export * from './log';

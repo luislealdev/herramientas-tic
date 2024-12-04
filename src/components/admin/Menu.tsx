@@ -1,6 +1,6 @@
 'use client';
 import Link from "next/link";
-import { FiMenu, FiHome, FiList, FiTool } from "react-icons/fi";
+import { FiMenu, FiHome, FiList, FiTool, FiFileText } from "react-icons/fi";
 import styles from "@/components/admin/AdminBoard.module.css";
 import { useState } from "react";
 
@@ -16,7 +16,7 @@ const Menu = () => {
         };
 
     return (
-        <div >
+        <div>
             <div className=" align-center relative">
                 {/* Botón de menú */}
                 <button onClick={toggleMenu} className={`${styles.menuBtn}`} arial-label="Toggle menu">
@@ -40,6 +40,12 @@ const Menu = () => {
                                     <Link href="/admin/category"  className="flex align-center">
                                         <FiList className={styles.icon} />
                                         Categorías
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/admin/logs"  className="flex align-center">
+                                        <FiFileText className={styles.icon} />
+                                        Logs
                                     </Link>
                                 </li>
                                 <li>
