@@ -1,0 +1,60 @@
+.dashBoardContainer {
+    position: flex;
+    width: auto;
+    height: auto;
+    background-color: #e0e0e0; /* Fondo gris claro */
+    padding: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  }
+.chartContainer {
+    width: 100%;
+    height: 300px;
+    background-color: #e0e0e0; /* Fondo gris claro */
+    padding: 20px;
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    display: flex;
+    align-items: justify;
+}
+.donutText {
+  position: absolute;
+  top: 57%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 17px;
+  font-weight: bold;
+  color: #333;
+}
+.donutTextTool {
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 17px;
+  font-weight: bold;
+  color: #333;
+}
+/* Estilos para el radar chart */
+.radar {
+  position: center;
+  width: 100%;
+  height: 100%;
+  padding: 20px 0;
+  margin: auto; /* Espaciado y centrado del gráfico de radar */
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+.donut { 
+  position: relative; 
+  width: 100%; 
+  height: 100%;
+  padding: 20px 0;
+  margin: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  border-radius: 10px; /* Bordes redondeados */
+ 
+}
+
+
+  
