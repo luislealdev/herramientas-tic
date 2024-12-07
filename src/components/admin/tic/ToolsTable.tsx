@@ -24,20 +24,20 @@ export const ToolsTable = () => {
   };
 
   useEffect(() => {
-    const fetchTools = async () => {
-      const { tools, totalPages } = await getPaginatedTools({
-        page: currentPage,
-        take: itemsPerPage,
-        search: searchQuery,
-      });
-      setTools(tools);
-      setTotalPages(totalPages);
+    const fetchTools = async () => {      
+        const { tools, totalPages } = await getPaginatedTools({
+          page: currentPage,
+          take: itemsPerPage,
+          search: searchQuery,
+        });
+        setTools(tools);
+        setTotalPages(totalPages);
     };
 
     fetchTools();
     // Volver al inicio cuando cambia de página
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [currentPage, itemsPerPage, searchQuery]);
+  }, [currentPage, itemsPerPage, searchQuery,]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
