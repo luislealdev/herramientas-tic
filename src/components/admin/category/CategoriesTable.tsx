@@ -82,7 +82,6 @@ export const CategoriesTable = () => {
         <thead>
           <tr>
             <th>Nombre</th>
-            <th>Número de Herramientas</th>
           </tr>
         </thead>
         <tbody>
