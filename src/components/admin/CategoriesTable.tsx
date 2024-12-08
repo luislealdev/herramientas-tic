@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { getPaginatedCategories } from '@/actions/categories/get-paginated-categories';
 import styles from './AdminBoard.module.css';
 import { Category } from '@prisma/client';
+import {deleteCategoryById} from "@/actions/categories/delete-category-by-id";
 
 export const CategoriesTable = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -19,6 +20,21 @@ export const CategoriesTable = () => {
       setExpandedCategories(expandedCategories.filter((i) => i !== index));
     } else {
       setExpandedCategories([...expandedCategories, index]);
+    }
+  };
+
+  const handleDeleteCategory = async (id: string) => {
+    const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar esta categoría?');
+    if (confirmDelete) {
+      const userId = '12345'; // Ajusta con tu lógica para obtener el ID del usuario.
+      const result = await deleteCategoryById(id, userId);
+
+      if (result.ok) {
+        setCategories(categories.filter((category) => category.id !== id));
+        alert('Categoría eliminada correctamente.');
+      } else {
+        alert(result.message || 'Error al eliminar la categoría.');
+      }
     }
   };
 
@@ -86,18 +102,18 @@ export const CategoriesTable = () => {
           </tr>
         </thead>
         <tbody>
-        {categories.map((tool, index) => (
+        {categories.map((category, index) => (
             <React.Fragment key={index}>
-              <tr onClick={() => toggleRow(index)} className={styles.tool}>
-                <td>{tool.name}</td>
+              <tr onClick={() => toggleRow(index)} className={styles.category}>
+                <td>{category.name}</td>
               </tr>
 
               {expandedCategories.includes(index) && (
-                <tr className={styles.setExpandedTools}>
+                <tr className={styles.setExpandedcategorys}>
                   <td>
                     <div className="flex justify-content" style={{ gap: '16px', paddingTop: 10 }}>
-                      <Link href={`/admin/category/${tool.name}`} className={styles.addButton}> Editar </Link>
-                      <button className={styles.deleteButton}> Eliminar </button>
+                      <Link href={`/admin/category/${category.name}`} className={styles.addButton}> Editar </Link>
+                      <button className={styles.deleteButton} onClick={() => handleDeleteCategory(category.id)}> Eliminar </button>
                     </div>
                   </td>
                 </tr>

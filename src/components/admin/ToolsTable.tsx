@@ -6,6 +6,7 @@ import { Tool } from '@prisma/client';
 import Image from 'next/image';
 import { getPaginatedTools } from '../../actions/tools/get-paginated-tools';
 import styles from './AdminBoard.module.css';
+import { deleteToolById } from '@/actions/tools/delete-tool-by-id'
 
 export const ToolsTable = () => {
   const [tools, setTools] = useState<Tool[]>([]);
@@ -14,6 +15,21 @@ export const ToolsTable = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchQuery, setSearchQuery] = useState('');
+
+  const handleDeleteTool = async (toolId: string) => {
+    const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar esta herramienta?');
+    if (confirmDelete) {
+      const userId = '12345'; // Reemplázalo con la lógica para obtener el ID del usuario actual.
+      const result = await deleteToolById(toolId, userId);
+
+      if (result.ok) {
+        setTools(tools.filter((tool) => tool.id !== toolId));
+        alert('Herramienta eliminada correctamente.');
+      } else {
+        alert(result.message || 'Error al eliminar la herramienta.');
+      }
+    }
+  };
 
   const toggleRow = (index: number) => {
     if (expandedTools.includes(index)) {
@@ -143,7 +159,7 @@ export const ToolsTable = () => {
 
                     <div className="flex justify-content" style={{ gap: '16px', paddingTop: 10 }}>
                       <Link href={`/admin/tic/${tool.slug}`} className={styles.addButton}> Editar </Link>
-                      <button className={styles.deleteButton}> Eliminar </button>
+                      <button className={styles.deleteButton} onClick={() => handleDeleteTool(tool.id)}> Eliminar </button>
                     </div>
                   </td>
                 </tr>
