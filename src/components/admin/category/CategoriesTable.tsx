@@ -6,6 +6,7 @@ import { getPaginatedCategories } from '@/actions/categories/get-paginated-categ
 import styles from '../AdminBoard.module.css';
 import { Category } from '@prisma/client';
 import {deleteCategoryById} from "@/actions/categories/delete-category-by-id";
+import { useSession } from "next-auth/react";
 
 export const CategoriesTable = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -14,6 +15,7 @@ export const CategoriesTable = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchQuery, setSearchQuery] = useState('');
+  const { data: session } = useSession(); 
 
   const toggleRow = (index: number) => {
     if (expandedCategories.includes(index)) {
@@ -26,7 +28,13 @@ export const CategoriesTable = () => {
   const handleDeleteCategory = async (id: string) => {
     const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar esta categoría?');
     if (confirmDelete) {
-      const userId = '12345'; // Ajusta con tu lógica para obtener el ID del usuario.
+      const userId = session?.user?.id; // Extrae el ID del usuario desde la sesión
+
+      if (!userId) {
+        alert('No se pudo obtener el ID del usuario. Inicia sesión nuevamente.');
+        return;
+      }
+
       const result = await deleteCategoryById(id, userId);
 
       if (result.ok) {
@@ -109,7 +117,7 @@ export const CategoriesTable = () => {
               </tr>
 
               {expandedCategories.includes(index) && (
-                <tr className={styles.setExpandedcategorys}>
+                <tr className={styles.setExpandedCategories}>
                   <td>
                     <div className="flex justify-content" style={{ gap: '16px', paddingTop: 10 }}>
                       <Link href={`/admin/category/${category.name}`} className={styles.addButton}> Editar </Link>

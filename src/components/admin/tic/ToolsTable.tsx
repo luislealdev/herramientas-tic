@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { deleteToolById } from '@/actions/tools/delete-tool-by-id'
 import { getPaginatedTools } from '@/actions/tools/get-paginated-tools';
 import styles from '../AdminBoard.module.css';
-
+import { useSession } from "next-auth/react";
 
 export const ToolsTable = () => {
   const [tools, setTools] = useState<Tool[]>([]);
@@ -16,11 +16,18 @@ export const ToolsTable = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchQuery, setSearchQuery] = useState('');
+  const { data: session } = useSession(); 
 
   const handleDeleteTool = async (toolId: string) => {
     const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar esta herramienta?');
     if (confirmDelete) {
-      const userId = '12345'; // Reemplázalo con la lógica para obtener el ID del usuario actual.
+      const userId = session?.user?.id; // Extrae el ID del usuario desde la sesión
+
+      if (!userId) {
+        alert('No se pudo obtener el ID del usuario. Inicia sesión nuevamente.');
+        return;
+      }
+
       const result = await deleteToolById(toolId, userId);
 
       if (result.ok) {
