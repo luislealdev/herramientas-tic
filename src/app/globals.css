@@ -22,7 +22,7 @@ h6 {
 }
 
 div {
-  width: 100%;
+  width: auto;
 }
 
 input,
@@ -306,6 +306,26 @@ input[type="checkbox"]:checked {
 .contact-button:hover {
   background-color: #555;
 }
+
+.menu-item{
+  position: relative;
+  padding-bottom: 5px;
+  cursor: pointer;
+}
+.menu-item::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  background-color: #000;
+  transition: width 0.3s ease;
+}
+.menu-item:hover::after{
+  width: 100%;
+}
+/*----------------------------------------------------------*/
 @media (max-width: 770px) {
   .column-in-mobile {
     display: flex;
@@ -349,4 +369,3 @@ input[type="checkbox"]:checked {
     max-width: 100%;
 }
 }
-

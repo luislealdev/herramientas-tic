@@ -1,6 +1,6 @@
 'use client';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableHeader, TableRow, TableToolbar, TableToolbarContent, Dropdown, Pagination } from '@carbon/react';
-import '../../globals.scss';
+import '../../../globals.scss';
 import { useState, useEffect } from 'react';
 import { Log } from '@prisma/client';
 import { getLogs } from '@/actions/tools/get-logs';

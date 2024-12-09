@@ -1,6 +1,7 @@
 /* components/AdminBoard.module.css */
 .adminBoard {
-  padding: 20px;
+  position: relative;
+  padding: 10px;
   font-family: 'IBM Plex Sans', sans-serif;
 }
 
@@ -81,7 +82,6 @@
   align-items: center;
   margin-top: 20px;
   padding: 10px 0;
-  
 }
 
 .pageSize select {
@@ -109,16 +109,17 @@
   border: 1px solid #ddd;
   padding: 5px 10px;
   cursor: pointer;
-  
 }
 
 .pageButton:hover {
   background-color: #f0f0f0;
 }
+
 .list {
   list-style-type: disc;
-  margin-left: 20px; 
+  margin-left: 20px;
 }
+
 .deleteButton {
   background-color: #fe0f0f;
   color: white;
@@ -128,7 +129,270 @@
   padding: 12px 30px;
   align-items: center;
 }
+
 .image {
   height: auto;
   width: 100px;
+}
+
+.segmented-bar {
+  border-bottom: 2px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.segmented-bar .btn-left,
+.segmented-bar .btn-right {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.segmented-bar .btn-left:hover,
+.segmented-bar .btn-right:hover {
+  background-color: #0056b3;
+}
+
+.adminContainer {
+
+  width: 100%;
+  height: auto;
+  background-color: #e0e0e0; /* Fondo gris claro */
+  padding: 10px 20px;
+  border-radius: 50px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  display: flex;
+  align-items: flex-start;
+}
+.chartContainer {
+  margin-left: 0;
+  transition: margin-left 0.3s ease-in-out;
+  width: 100%;
+  height: 100%;
+  background-color: #e0e0e000; /* Fondo gris claro */
+  padding: 20px;
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  display: flex;
+  align-items: flex-start;
+}
+.menuContainer{
+  width: auto;
+}
+.side-menu.open ~ .chartContainer {
+  margin-left: 250px; /* Espacio cuando el menú está abierto */
+}
+.backButton {
+  background-color: #e0e0e000;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 12px 30px;
+}
+
+.backButton:hover {
+  background-color: transparent;
+}
+
+/* Estilo para el botón del menú */
+.menu-btn {
+  position: center;
+  width: auto;
+  top: 20px;
+  background: none;
+  background-color: #e0e0e0;
+  padding: 10px 15px;
+  cursor: pointer;
+  z-index: 1002;
+  transition: background-color 0.5s , transform 0.4s ease;
+}
+.menu-btn:hover {
+  background-color: #e0e0e0;
+  transform: scale(1.1);
+}
+
+.menu-btn:focus {
+  outline: none;
+}
+
+/* Estilos del menú lateral */
+.side-menu {
+  position: fixed;
+  top: 0;
+  right: -250px; 
+  width: 250px;
+  height: 100%;
+  background-color: #e0e0e0;
+  z-index: 1001;
+  padding: 20px;
+  transition: transform 0.6s ease-in-out; /* Transición suave */
+}
+
+.sideMenuOverlay {
+  position: fixed;
+  padding: 10px;
+  top: 69px;
+  left: 80px;
+  width: auto;
+  height: auto;
+  background-color: #e0e0e0d9; 
+  z-index: 1001;
+  display:flexbox; 
+}
+
+.side-menu.open {
+  right: 0;
+}
+
+/* Estilos para los enlaces dentro del menú lateral */
+.side-menu ul {
+  list-style: none;
+  padding: 20px;
+  margin: 0;
+  align-items: center;
+}
+
+.side-menu li {
+  margin-bottom: 20px;
+  color: white;
+  padding: 20px;
+  font-size: 18px;
+  transition: color 0.3s ease;
+  gap: 8px;
+  
+}
+
+.side-menu ul li :hover {
+  color: #e0e0e0; /* Color del enlace al pasar el mouse */
+}
+
+/* Estilos para el submenú */
+.sub-menu {
+  list-style-type: none;
+  margin-left: 20px;
+  margin-top: 10px;
+  padding-left: 10px; /* Separación adicional */
+  border-left: 1px solid #ddd; /* Línea visual para separar */
+  transition: margin 0.3s ease-in-out;
+}
+
+.sub-menu li {
+  margin-bottom: 10px;
+}
+
+.sub-menu li a {
+  font-size: 16px;
+  color: #ddd;
+}
+
+.sub-menu li a:hover {
+  color: #000000;
+}
+
+/* Estilos para el contenido principal */
+.main-content {
+  margin-left: 20px; /* Deja espacio si el menú está visible */
+}
+
+/* --------------------------- Responsive --------------------------- */
+
+/* Menú lateral en pantallas pequeñas */
+@media (max-width: 768px) {
+  .side-menu {
+    width: 200px; 
+  }
+
+  .side-menu.open {
+    left: 0; /* Menú se despliega cuando se añade la clase 'open' */
+  }
+
+  .menu-btn {
+    top: 15px;
+    left: 15px;
+    padding: 10px;
+    font-size: 25px;
+  }
+
+  .menu-btn:focus {
+    outline: none;
+  }
+  .menu-btn:hover {
+    transform: scale(1.05);
+  }
+  .side-menu ul {
+    padding: 10px;
+  }
+
+  .side-menu ul li {
+    margin-bottom: 15px;
+  }
+
+  .side-menu ul li a {
+    font-size: 16px;
+  }
+
+  /* Ajuste de contenido principal cuando el menú está abierto */
+  .main-content {
+    margin-left: 0; /* Sin espacio si el menú está colapsado */
+  }
+
+  .chartContainer {
+    margin-left: 0;
+    padding: 10px;
+    height: auto;
+    box-shadow: none; /* Desactivar sombra en pantallas pequeñas */
+  }
+
+  .chartContainer h1 {
+    font-size: 18px;
+  }
+
+  /* Ajuste de tamaño de botones */
+  .addButton,
+  .backButton {
+    padding: 8px 20px;
+    font-size: 12px;
+  }
+
+  .icon {
+    font-size: 18px;
+  }
+
+  .searchBox input {
+    font-size: 12px;
+  }
+
+  .pageButton {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  /* Asegurar que la tabla sea deslizante */
+  .table {
+    width: 100%;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
+  }
+
+  /* Paginación en pantallas pequeñas */
+  .pagination {
+    flex-direction: column; /* Apilar los controles de paginación en pantallas pequeñas */
+    align-items: flex-start;
+  }
+
+  .pageButton {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+  .addButton,
+  .backButton {
+    padding: 8px 20px;
+    font-size: 12px;
+  }
 }

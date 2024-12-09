@@ -2,7 +2,7 @@ import { CategoriesTable } from "@/components";
 
 const CategoriesPage = () => {
   return (
-    <main className='p-100'>
+    <main className='p-10'>
       <CategoriesTable />
     </main>
   )

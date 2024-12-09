@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { FiArchive, FiFilter, FiSearch } from 'react-icons/fi';
 import Link from 'next/link';
 import { getPaginatedCategories } from '@/actions/categories/get-paginated-categories';
-import styles from './AdminBoard.module.css';
+import styles from '../AdminBoard.module.css';
 import { Category } from '@prisma/client';
 import {deleteCategoryById} from "@/actions/categories/delete-category-by-id";
 
