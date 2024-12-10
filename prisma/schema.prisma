@@ -21,7 +21,7 @@ model User {
 model Image {
   id     String @id @default(uuid())
   url    String
-  tool   Tool   @relation(fields: [toolId], references: [id])
+  tool   Tool   @relation(fields: [toolId], references: [id], onDelete: Cascade)
   toolId String
 }
 
@@ -38,7 +38,7 @@ model Tool {
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
   categories      Category[]
-  user            User       @relation(fields: [createdBy], references: [id])
+  user            User       @relation(fields: [createdBy], references: [id], onDelete: Cascade)
   createdBy       String
   slug            String
 }
