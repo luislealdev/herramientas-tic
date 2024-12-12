@@ -4,7 +4,6 @@ import { Doughnut, Radar } from 'react-chartjs-2';  // Importa el gráfico de do
 import { Tool as PrismaTool, Category, Log } from '@prisma/client';
 import { getPaginatedTools } from '@/actions/tools/get-paginated-tools';
 import styles from './DashBoard.module.css';
-//import Log from '@/lib/prisma';
 import { getLogs } from '@/actions/tools/get-logs';
 
 import {
@@ -37,20 +36,6 @@ ChartJS.register(
 interface ToolWithCategories extends PrismaTool {
   categories: Category[];
 }
-
-/*
-interface Log {
-  action: string;
-  details: string;
-  realizedAt: Date;
-}
-
-export async function getAllTools() {
-  return prisma.tool.findMany({
-      include: { categories: true },
-  });
-}
-*/
 
 const Dashboard = () => {
   const [tools, setTools] = useState<ToolWithCategories[]>([]);
