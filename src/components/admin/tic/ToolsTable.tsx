@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { FiArchive, FiFilter, FiSearch } from 'react-icons/fi';
+import { FiSearch } from 'react-icons/fi';
 import Link from 'next/link';
 import { Tool } from '@prisma/client';
 import Image from 'next/image';
@@ -9,7 +9,11 @@ import { getPaginatedTools } from '@/actions/tools/get-paginated-tools';
 import styles from '../AdminBoard.module.css';
 import { useSession } from "next-auth/react";
 
-export const ToolsTable = () => {
+interface ToolsTableProps {
+  refreshLogs: () => void;
+}
+
+export const ToolsTable: React.FC<ToolsTableProps> = ( {refreshLogs} ) => {
   const [tools, setTools] = useState<Tool[]>([]);
   const [expandedTools, setExpandedTools] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -32,6 +36,7 @@ export const ToolsTable = () => {
 
       if (result.ok) {
         setTools(tools.filter((tool) => tool.id !== toolId));
+        refreshLogs();
         alert('Herramienta eliminada correctamente.');
       } else {
         alert(result.message || 'Error al eliminar la herramienta.');
@@ -97,8 +102,6 @@ export const ToolsTable = () => {
             onChange={handleSearchChange}
           />
         </div>
-        <FiFilter className={styles.icon} />
-        <FiArchive className={styles.icon} />
         <Link href="/admin/tic/new" className={styles.addButton}>
           Agregar
         </Link>

@@ -58,7 +58,6 @@ const Dashboard = () => {
       try {
         const fetchedLogs = await getLogs(); // Obtener los logs desde la base de datos
         setLogs(fetchedLogs); // Almacenamos los logs en el estado
-        console.log('Logs cargados:', fetchedLogs); // Ver los logs en la consola
       } catch (error) {
         console.error('Error al obtener los logs:', error);
       }
@@ -68,6 +67,18 @@ const Dashboard = () => {
     fetchLogs();
     window.scrollTo({top: 0, behavior: "smooth"})
   }, [currentPage, itemsPerPage, searchQuery]);
+
+  const refreshLogs = async () => {
+    try {
+      const fetchedLogs = await getLogs(); // Obtiene los logs actualizados
+      setLogs(fetchedLogs); // Actualiza el estado de los logs
+    } catch (error) {
+      console.error('Error al recargar los logs:', error);
+    }
+  };
+  useEffect(() => {
+    refreshLogs();
+  }, []);
 
   const categoryCounts = tools.reduce((acc, tool) => {
     tool.categories.forEach((category) => {
