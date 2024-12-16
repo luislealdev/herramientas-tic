@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { FiArchive, FiFilter, FiSearch } from 'react-icons/fi';
+import { FiSearch } from 'react-icons/fi';
 import Link from 'next/link';
 import { Tool } from '@prisma/client';
 import Image from 'next/image';
@@ -9,7 +9,7 @@ import { getPaginatedTools } from '@/actions/tools/get-paginated-tools';
 import styles from '../AdminBoard.module.css';
 import { useSession } from "next-auth/react";
 
-export const ToolsTable = () => {
+export const ToolsTable= (  ) => {
   const [tools, setTools] = useState<Tool[]>([]);
   const [expandedTools, setExpandedTools] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -48,20 +48,20 @@ export const ToolsTable = () => {
   };
 
   useEffect(() => {
-    const fetchTools = async () => {
-      const { tools, totalPages } = await getPaginatedTools({
-        page: currentPage,
-        take: itemsPerPage,
-        search: searchQuery,
-      });
-      setTools(tools);
-      setTotalPages(totalPages);
+    const fetchTools = async () => {      
+        const { tools, totalPages } = await getPaginatedTools({
+          page: currentPage,
+          take: itemsPerPage,
+          search: searchQuery,
+        });
+        setTools(tools);
+        setTotalPages(totalPages);
     };
 
     fetchTools();
     // Volver al inicio cuando cambia de página
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [currentPage, itemsPerPage, searchQuery]);
+  }, [currentPage, itemsPerPage, searchQuery,]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -97,8 +97,6 @@ export const ToolsTable = () => {
             onChange={handleSearchChange}
           />
         </div>
-        <FiFilter className={styles.icon} />
-        <FiArchive className={styles.icon} />
         <Link href="/admin/tic/new" className={styles.addButton}>
           Agregar
         </Link>

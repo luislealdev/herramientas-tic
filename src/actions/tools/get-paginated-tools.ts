@@ -28,8 +28,8 @@ export const getPaginatedTools = async ({ page = 1, take = 9, search = '', categ
 
     try {
         const tools = await prisma.tool.findMany({
-            take: take,
-            skip: (page - 1) * take,
+            take: take === -1 ? undefined : take,
+            skip: take === -1 ? undefined : (page - 1) * take,
             orderBy: {
                 name: 'asc'
             },

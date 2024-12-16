@@ -2,7 +2,7 @@ import { auth } from "@/auth.config";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import Menu from "@/components/admin/Menu";
-import styles from '@/components/admin/AdminBoard.module.css';
+
 
 
 export const metadata: Metadata = {
@@ -23,10 +23,10 @@ export default async function RootLayout({
     }
 
     return (
-        <section className={styles.adminContainer }>
+        <section >
             <div className="flex p-10">
-                    <Menu />
                 <div>
+                    <Menu />
                     {children}
                 </div>
             </div>

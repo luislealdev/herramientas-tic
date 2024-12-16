@@ -80,7 +80,7 @@ export const CategoriesTable = () => {
   };
 
   return (
-    <div className={styles.adminBoard}>
+    <div className={styles.categoryBoard + "align-center relative"}>
       <h1>Base de datos de las Categorías TIC</h1>
       <p>Todas las categorías registradas hasta el momento</p>
 
@@ -106,7 +106,6 @@ export const CategoriesTable = () => {
         <thead>
           <tr>
             <th>Nombre</th>
-            <th>Número de Herramientas</th>
           </tr>
         </thead>
         <tbody>

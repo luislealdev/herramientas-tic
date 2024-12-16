@@ -1,10 +1,10 @@
 'use client';
 import React, {useEffect, useState} from 'react';
 import { Doughnut, Radar } from 'react-chartjs-2';  // Importa el gráfico de dona
-import { Tool as PrismaTool, Category } from '@prisma/client';
+import { Tool as PrismaTool, Category, Log } from '@prisma/client';
 import { getPaginatedTools } from '@/actions/tools/get-paginated-tools';
 import styles from './DashBoard.module.css';
-//import { getLogs } from '@/actions/tools/get-logs';
+import { getLogs } from '@/actions/tools/get-logs';
 
 import {
   Chart as ChartJS,
@@ -39,24 +39,46 @@ interface ToolWithCategories extends PrismaTool {
 
 const Dashboard = () => {
   const [tools, setTools] = useState<ToolWithCategories[]>([]);
+  const [logs, setLogs] = useState<Log[]>([]);
+
   const currentPage = 1;
-  const itemsPerPage = 10;
+  const itemsPerPage = -1;
   const searchQuery = '';
 
   useEffect(() => { 
-      const fetchTools = async () => {
+    const fetchTools = async () => {    
       const { tools } = await getPaginatedTools({
-          page: currentPage,
-          take: itemsPerPage,
-          search: searchQuery,
-      });
+        page: currentPage,
+        take: itemsPerPage,
+        search: searchQuery,
+      })
       setTools(tools);
-      };
-
-      fetchTools();
-      window.scrollTo({top: 0, behavior: "smooth"})
+    };
+    const fetchLogs = async () => {
+      try {
+        const fetchedLogs = await getLogs(); // Obtener los logs desde la base de datos
+        setLogs(fetchedLogs); // Almacenamos los logs en el estado
+      } catch (error) {
+        console.error('Error al obtener los logs:', error);
+      }
+    };
+   
+    fetchTools();
+    fetchLogs();
+    window.scrollTo({top: 0, behavior: "smooth"})
   }, [currentPage, itemsPerPage, searchQuery]);
-  
+
+  const refreshLogs = async () => {
+    try {
+      const fetchedLogs = await getLogs(); // Obtiene los logs actualizados
+      setLogs(fetchedLogs); // Actualiza el estado de los logs
+    } catch (error) {
+      console.error('Error al recargar los logs:', error);
+    }
+  };
+  useEffect(() => {
+    refreshLogs();
+  }, []);
 
   const categoryCounts = tools.reduce((acc, tool) => {
     tool.categories.forEach((category) => {
@@ -104,14 +126,24 @@ const Dashboard = () => {
       },
     },
   };
-  // Radar Chart estático
+
+  // Radar Chart 
+
+  const createdLogs = logs.filter(log => log.action === 'create tool').length;
+  const updatedLogs = logs.filter(log => log.action === 'update tool').length;
+  const deletedLogs = logs.filter(log => log.action === 'delete tool').length;
+
   const radarData = {
     type: 'radar',
     labels: ['Create', 'Update', 'Delete'], // Acciones de ejemplo
     datasets: [
       {
         label: 'Tool Actions',
-        data: [10, 15, 5], // Ejemplo de datos
+        data: [
+          createdLogs,
+          updatedLogs,
+          deletedLogs,
+        ], // Ejemplo de datos
         ...(() => {
           const color = getRandomColor(); // Genera un único color
           return {
@@ -121,19 +153,6 @@ const Dashboard = () => {
           };
         })(),
 
-      },
-      
-      {
-        label: 'Log Categories', // Segundo dataset para categorías
-        data: [8, 12, 3], // Ejemplo de datos de categorías
-        ...(() => {
-          const color = getRandomColor(); // Genera un único color
-          return {
-            backgroundColor: color,
-            borderColor: color,
-            pointBackgroundColor: color,
-          };
-        })(),
       },
     ],
   };
