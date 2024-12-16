@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { FiArchive, FiFilter, FiSearch } from 'react-icons/fi';
+import { FiSearch } from 'react-icons/fi';
 import Link from 'next/link';
 import { getPaginatedCategories } from '@/actions/categories/get-paginated-categories';
 import styles from '../AdminBoard.module.css';
@@ -95,8 +95,6 @@ export const CategoriesTable = () => {
             onChange={handleSearchChange}
           />
         </div>
-        <FiFilter className={styles.icon} />
-        <FiArchive className={styles.icon} />
         <Link href="/admin/category/new" className={styles.addButton}>
           Agregar
         </Link>
