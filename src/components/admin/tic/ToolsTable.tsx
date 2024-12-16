@@ -9,11 +9,7 @@ import { getPaginatedTools } from '@/actions/tools/get-paginated-tools';
 import styles from '../AdminBoard.module.css';
 import { useSession } from "next-auth/react";
 
-interface ToolsTableProps {
-  refreshLogs: () => void;
-}
-
-export const ToolsTable: React.FC<ToolsTableProps> = ( {refreshLogs} ) => {
+export const ToolsTable= (  ) => {
   const [tools, setTools] = useState<Tool[]>([]);
   const [expandedTools, setExpandedTools] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,7 +32,6 @@ export const ToolsTable: React.FC<ToolsTableProps> = ( {refreshLogs} ) => {
 
       if (result.ok) {
         setTools(tools.filter((tool) => tool.id !== toolId));
-        refreshLogs();
         alert('Herramienta eliminada correctamente.');
       } else {
         alert(result.message || 'Error al eliminar la herramienta.');

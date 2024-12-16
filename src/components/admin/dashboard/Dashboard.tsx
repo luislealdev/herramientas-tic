@@ -62,7 +62,7 @@ const Dashboard = () => {
         console.error('Error al obtener los logs:', error);
       }
     };
-        
+   
     fetchTools();
     fetchLogs();
     window.scrollTo({top: 0, behavior: "smooth"})
